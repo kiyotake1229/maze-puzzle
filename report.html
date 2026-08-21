@@ -1,0 +1,201 @@
+<title>MAZE 開発報告</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --panel: #ffffff;
+    --ink: #1a1d2b;
+    --ink-soft: #545a70;
+    --line: #e5e8f2;
+    --teal: #0f9d8f;
+    --violet: #6d5cf0;
+    --gold: #d99a1a;
+    --good: #12a150;
+    --shadow: 0 1px 2px rgba(20,24,50,.04), 0 12px 30px -16px rgba(20,24,50,.25);
+    --grad: linear-gradient(100deg, var(--teal), var(--violet));
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg: #0f1226; --panel: #171b3a; --ink: #eef0ff; --ink-soft: #a2a8d0;
+      --line: #2a2f56; --teal: #37d3bf; --violet: #a390ff; --gold: #f2b840; --good: #35d67e;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 20px 40px -20px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1226; --panel: #171b3a; --ink: #eef0ff; --ink-soft: #a2a8d0;
+    --line: #2a2f56; --teal: #37d3bf; --violet: #a390ff; --gold: #f2b840; --good: #35d67e;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 20px 40px -20px rgba(0,0,0,.6);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+    line-height: 1.75; letter-spacing: .01em;
+    padding: clamp(20px, 5vw, 64px) 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; }
+
+  .eyebrow { font-family: "Space Mono", monospace; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); }
+  header.top { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+  header.top img { width: 60px; height: 60px; border-radius: 15px; box-shadow: var(--shadow); }
+  h1 { font-size: clamp(28px, 5vw, 40px); font-weight: 900; letter-spacing: -.01em; line-height: 1.15; text-wrap: balance; }
+  .lead { font-size: clamp(16px, 2.4vw, 19px); color: var(--ink-soft); margin: 14px 0 6px; max-width: 62ch; }
+  .meta { font-family: "Space Mono", monospace; font-size: 12.5px; color: var(--ink-soft); margin-top: 10px; }
+
+  .rule { height: 1px; background: var(--line); margin: 34px 0; border: 0; }
+
+  section { margin: 34px 0; }
+  h2 { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  h2::before { content: ""; width: 22px; height: 3px; border-radius: 2px; background: var(--grad); }
+
+  .cta {
+    display: block; text-decoration: none; color: #fff; background: var(--grad);
+    border-radius: 16px; padding: 20px 24px; box-shadow: var(--shadow);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    transition: transform .15s ease, filter .2s ease;
+  }
+  .cta:hover { transform: translateY(-2px); filter: brightness(1.05); }
+  .cta .l { font-size: 12px; letter-spacing: .12em; opacity: .85; font-family: "Space Mono", monospace; }
+  .cta .u { font-size: clamp(15px, 2.6vw, 20px); font-weight: 700; word-break: break-all; }
+  .cta .go { font-size: 22px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: var(--shadow); }
+  .card .t { font-weight: 700; margin-bottom: 4px; }
+  .card .d { font-size: 14px; color: var(--ink-soft); }
+  .card a { color: var(--teal); text-decoration: none; font-family: "Space Mono", monospace; font-size: 12.5px; word-break: break-all; }
+  .card a:hover { text-decoration: underline; }
+
+  ol.flow { list-style: none; counter-reset: s; display: grid; gap: 2px; }
+  ol.flow li { position: relative; padding: 14px 0 14px 46px; border-left: 2px solid var(--line); margin-left: 15px; counter-increment: s; }
+  ol.flow li::before {
+    content: counter(s); position: absolute; left: -16px; top: 12px; width: 30px; height: 30px;
+    background: var(--panel); border: 2px solid var(--teal); color: var(--teal);
+    border-radius: 50%; display: grid; place-items: center; font-family: "Space Mono", monospace; font-size: 13px; font-weight: 700;
+  }
+  ol.flow li:last-child { border-left-color: transparent; }
+  ol.flow .h { font-weight: 700; }
+  ol.flow .p { font-size: 14px; color: var(--ink-soft); }
+
+  .feat { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px 22px; }
+  .feat div { font-size: 14.5px; padding-left: 20px; position: relative; }
+  .feat div::before { content: ""; position: absolute; left: 0; top: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--grad); }
+
+  .quality { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: var(--shadow); }
+  .quality p { font-size: 14.5px; color: var(--ink-soft); margin-bottom: 12px; }
+  .qgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 14px; margin-top: 6px; }
+  .stat { text-align: center; }
+  .stat .n { font-size: 30px; font-weight: 900; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-variant-numeric: tabular-nums; }
+  .stat .k { font-size: 12px; color: var(--ink-soft); letter-spacing: .04em; }
+
+  .biz { background: linear-gradient(180deg, color-mix(in srgb, var(--teal) 8%, var(--panel)), var(--panel)); border: 1px solid var(--line); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); }
+  .biz ul { list-style: none; display: grid; gap: 12px; }
+  .biz li { padding-left: 26px; position: relative; font-size: 15px; }
+  .biz li::before { content: "→"; position: absolute; left: 0; color: var(--teal); font-weight: 700; }
+
+  .next { display: grid; gap: 8px; }
+  .next div { font-size: 14.5px; color: var(--ink-soft); padding-left: 18px; position: relative; }
+  .next div::before { content: "・"; position: absolute; left: 0; color: var(--violet); }
+
+  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-soft); }
+  strong.hl { color: var(--ink); font-weight: 700; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <img src="data:image/png;base64,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" alt="MAZE icon">
+    <div>
+      <div class="eyebrow">Project Report</div>
+      <h1>迷路パズルゲーム「MAZE」<br>企画から公開まで</h1>
+    </div>
+  </header>
+  <p class="lead">AIを活用したコーディングで、迷路パズルゲームを企画・開発し、<strong class="hl">今日から遊べる／iPhoneのアプリとして使える状態</strong>まで仕上げました。開発はすべて対話しながら進め、機能追加のたびに動作確認と品質チェックを行っています。</p>
+  <p class="meta">報告日 2026-08-21 ・ 開発: AIペアプログラミング ・ 種別: Webゲーム（PWA）</p>
+
+  <a class="cta" href="https://kiyotake1229.github.io/maze-puzzle/" target="_blank" rel="noopener">
+    <span><span class="l">今すぐ遊べる公開URL</span><br><span class="u">kiyotake1229.github.io/maze-puzzle/</span></span>
+    <span class="go">▶</span>
+  </a>
+
+  <hr class="rule">
+
+  <section>
+    <h2>成果物</h2>
+    <div class="cards">
+      <div class="card"><div class="t">遊べるゲーム本体</div><div class="d">PC・スマホのブラウザで動作。単一ファイルで軽快。</div></div>
+      <div class="card"><div class="t">iPhoneアプリ化（PWA）</div><div class="d">「ホーム画面に追加」で専用アイコンのフルスクリーンアプリに。オフライン対応。</div></div>
+      <div class="card"><div class="t">ソース公開</div><div class="d">GitHubで管理・配信。更新は即時反映。<br><a href="https://github.com/kiyotake1229/maze-puzzle" target="_blank" rel="noopener">github.com/kiyotake1229/maze-puzzle</a></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>開発の流れ</h2>
+    <ol class="flow">
+      <li><div class="h">アイデア決め</div><div class="p">「ブラウザで確認しながら作れるもの」から、迷路パズルに決定。</div></li>
+      <li><div class="h">プロトタイプ作成</div><div class="p">自動生成される迷路をクリアする基本ゲームを構築、公開URL化。</div></li>
+      <li><div class="h">操作性の改善</div><div class="p">スマホで直感的に遊べるよう「スワイプで一気に進む」操作に刷新。</div></li>
+      <li><div class="h">機能の作り込み</div><div class="p">宝石・鍵とドア・星評価・タイムアタック・ワールド制・実績など、遊び込める要素を段階的に追加。</div></li>
+      <li><div class="h">品質チェックと修正</div><div class="p">実際のブラウザで動作確認し、見つかった不具合をその場で修正。</div></li>
+      <li><div class="h">iPhoneアプリ化</div><div class="p">PWAとして整備し、公開URLからホーム画面に追加できる状態に。</div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>実装した主な機能</h2>
+    <div class="feat">
+      <div>自動生成される迷路（無限）</div>
+      <div>スワイプ／キー操作</div>
+      <div>宝石集めと星評価（★1〜3）</div>
+      <div>鍵とドアのパズル要素</div>
+      <div>タイムアタックモード</div>
+      <div>スーパーハードモード</div>
+      <div>視界（暗闇）モード</div>
+      <div>4種のカラーテーマ</div>
+      <div>BGM・効果音</div>
+      <div>ワールド制の演出</div>
+      <div>実績バッジ（11種）</div>
+      <div>結果のSNSシェア</div>
+      <div>記録・設定の自動保存</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>品質への取り組み</h2>
+    <div class="quality">
+      <p>「動けばよい」で終わらせず、実際のブラウザで操作して確認し、不具合を発見・修正しています。例：モード切替時に誤って時間切れになる不具合、ヒントが通れない道を示す不具合などを、検証中に発見してその場で修正しました。</p>
+      <div class="qgrid">
+        <div class="stat"><div class="n">48</div><div class="k">自動テスト通過<br>（全モード×全条件）</div></div>
+        <div class="stat"><div class="n">5+</div><div class="k">発見・修正した<br>不具合</div></div>
+        <div class="stat"><div class="n">100%</div><div class="k">主要機能の<br>動作確認済み</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>ビジネス的な意義</h2>
+    <div class="biz">
+      <ul>
+        <li>AIコーディングで、企画から公開まで<strong class="hl">短時間で「動くプロダクト」</strong>を形にできることを実証。</li>
+        <li>シェア機能を組み込み、<strong class="hl">SNS拡散による集客</strong>の導線を確保。</li>
+        <li>Webでもスマホアプリでも配布できる仕組みで、<strong class="hl">案件・自社サービスの実績</strong>として提示できる。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>今後の展開（任意）</h2>
+    <div class="next">
+      <div>クリア演出やUIのさらなる仕上げ</div>
+      <div>App Storeへの正式申請（ネイティブアプリ化）</div>
+      <div>ランキングや新モードの追加</div>
+    </div>
+  </section>
+
+  <footer>
+    公開URL：kiyotake1229.github.io/maze-puzzle/ ／ ソース：github.com/kiyotake1229/maze-puzzle<br>
+    本レポートは開発状況の共有用に作成したものです。
+  </footer>
+</div>
