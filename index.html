@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MAZE">
+<meta name="theme-color" content="#0f1226">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<title>MAZE - 迷路パズル</title>
+<style>
+  :root {
+    --bg: #0f1226;
+    --wall: #2b3168;
+    --path: #1a1f45;
+    --accent: #5eead4;
+    --accent2: #a78bfa;
+    --player: #fbbf24;
+    --goal: #34d399;
+    --trail: #5eead4;
+    --text: #e5e7ff;
+    --muted: #8b90c4;
+    --glowA: #232a63;
+    --glowB: #3a1f5c;
+  }
+  :root[data-theme="aurora"] {
+    --bg: #041b1a; --wall: #0d4a44; --path: #06322e;
+    --accent: #4ade80; --accent2: #22d3ee; --player: #fde047; --goal: #f472b6;
+    --trail: #4ade80; --text: #ecfdf5; --muted: #6ee7b7;
+    --glowA: #0b3d38; --glowB: #0e4f5c;
+  }
+  :root[data-theme="sunset"] {
+    --bg: #1c0a1e; --wall: #5b2340; --path: #34142e;
+    --accent: #fb923c; --accent2: #f43f5e; --player: #fde68a; --goal: #22d3ee;
+    --trail: #fb923c; --text: #ffe9e3; --muted: #d8859c;
+    --glowA: #4a1533; --glowB: #5c2a1f;
+  }
+  :root[data-theme="mono"] {
+    --bg: #0d0f12; --wall: #3a3f47; --path: #1a1d22;
+    --accent: #e5e7eb; --accent2: #9ca3af; --player: #f59e0b; --goal: #10b981;
+    --trail: #9ca3af; --text: #f3f4f6; --muted: #6b7280;
+    --glowA: #23262b; --glowB: #1a1d22;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { height: 100%; }
+  body {
+    min-height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: radial-gradient(1200px 800px at 20% -10%, var(--glowA) 0%, transparent 60%),
+                radial-gradient(1000px 700px at 100% 110%, var(--glowB) 0%, transparent 55%),
+                var(--bg);
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+    transition: background 0.5s ease;
+  }
+  header { text-align: center; }
+  h1 {
+    font-size: 26px; letter-spacing: 6px; font-weight: 800;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { font-size: 12px; color: var(--muted); letter-spacing: 2px; margin-top: 2px; }
+
+  .topbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  .stats { display: flex; gap: 8px; }
+  .stat {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 7px 14px; min-width: 70px; text-align: center;
+    backdrop-filter: blur(6px);
+  }
+  .stat .label { font-size: 9px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .stat .value { font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .stat.warn .value { color: var(--goal); }
+  .stat.danger .value { color: #f87171; animation: blink 0.6s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0.35; } }
+
+  .board-wrap {
+    position: relative; border-radius: 20px; padding: 12px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  canvas { display: block; border-radius: 12px; touch-action: none; }
+
+  .overlay {
+    position: absolute; inset: 12px; border-radius: 12px;
+    background: rgba(10,12,30,0.85); backdrop-filter: blur(4px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+    text-align: center; padding: 20px;
+  }
+  .overlay.show { opacity: 1; pointer-events: auto; }
+  #achvOverlay { background: rgba(9,11,26,0.98); }
+  .overlay .big { font-size: 30px; font-weight: 800; letter-spacing: 2px; }
+  .overlay .msg { color: var(--muted); font-size: 14px; }
+  .clear-big { background: linear-gradient(90deg, var(--goal), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .fail-big { color: #f87171; }
+
+  button.btn {
+    appearance: none; border: none; cursor: pointer; font-family: inherit;
+    font-weight: 700; letter-spacing: 1px; color: #0b1024;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    padding: 11px 26px; border-radius: 999px; font-size: 14px;
+    transition: transform 0.15s ease, filter 0.2s ease;
+    box-shadow: 0 10px 24px -8px rgba(94,234,212,0.45);
+  }
+  button.btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  button.btn:active { transform: translateY(0) scale(0.97); }
+
+  .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  .ghost {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text); box-shadow: none; padding: 9px 16px; font-size: 12px;
+  }
+  .ghost:hover { background: rgba(255,255,255,0.1); }
+  .ghost.on { background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #0b1024; }
+
+  .hint { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-align: center; }
+  .hint b { color: var(--accent); }
+
+  .ovbtns { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 160%);
+    background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #0b1024;
+    font-weight: 700; padding: 12px 22px; border-radius: 999px; font-size: 14px; letter-spacing: 1px;
+    box-shadow: 0 12px 30px -8px rgba(0,0,0,0.55); z-index: 50; pointer-events: none;
+    transition: transform 0.45s cubic-bezier(0.2,0.8,0.2,1);
+  }
+  .toast.show { transform: translate(-50%, 0); }
+  .badges {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px;
+    width: 100%; max-width: 360px; max-height: 60%; overflow-y: auto; padding: 2px;
+  }
+  .badge {
+    display: flex; gap: 9px; align-items: center; text-align: left;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 8px 10px;
+  }
+  .badge.locked { opacity: 0.4; }
+  .badge .bi {
+    width: 28px; height: 28px; flex: none; display: flex; align-items: center; justify-content: center;
+    border-radius: 8px; font-weight: 800; font-size: 14px; color: #0b1024;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+  .badge.locked .bi { background: rgba(255,255,255,0.15); color: var(--muted); }
+  .badge .bt b { display: block; font-size: 12px; color: var(--text); }
+  .badge .bt span { font-size: 10px; color: var(--muted); }
+
+  .dpad {
+    display: none; grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(3, 48px);
+    gap: 6px;
+  }
+  .dpad button {
+    appearance: none; border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06); color: var(--text);
+    border-radius: 14px; font-size: 22px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .dpad button:active { background: var(--accent); color: #0b1024; transform: scale(0.94); }
+  .dpad .up { grid-area: 1 / 2; } .dpad .left { grid-area: 2 / 1; }
+  .dpad .right { grid-area: 2 / 3; } .dpad .down { grid-area: 3 / 2; }
+  @media (hover: none) and (pointer: coarse) {
+    .dpad { display: grid; }
+    .hint .kbd-only { display: none; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>MAZE</h1>
+    <div class="sub" id="sub">迷路パズル</div>
+  </header>
+
+  <div class="topbar">
+    <div class="stats">
+      <div class="stat"><div class="label">Level</div><div class="value" id="lv">1</div></div>
+      <div class="stat" id="timeStat"><div class="label" id="timeLabel">Time</div><div class="value" id="time">0.0</div></div>
+      <div class="stat"><div class="label">Moves</div><div class="value" id="moves">0</div></div>
+      <div class="stat"><div class="label">Best</div><div class="value" id="best">-</div></div>
+    </div>
+  </div>
+
+  <div class="board-wrap">
+    <canvas id="game"></canvas>
+    <div class="overlay" id="overlay">
+      <div class="big" id="ov-title">CLEAR!</div>
+      <div class="msg" id="ov-msg"></div>
+      <div class="ovbtns">
+        <button class="btn" id="ov-btn">次のレベルへ</button>
+        <button class="btn ghost" id="shareBtn" style="display:none">結果をシェア</button>
+      </div>
+    </div>
+    <div class="overlay" id="achvOverlay">
+      <div class="big clear-big" style="font-size:22px">実績 <span id="achvCount"></span></div>
+      <div class="badges" id="badgeList"></div>
+      <button class="btn ghost" id="achvClose">閉じる</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn ghost" id="modeBtn">モード: ノーマル</button>
+    <button class="btn ghost" id="newBtn">やり直す</button>
+    <button class="btn ghost" id="hintBtn">ヒント</button>
+    <button class="btn ghost" id="fogBtn">視界: OFF</button>
+    <button class="btn ghost" id="themeBtn">テーマ</button>
+    <button class="btn ghost on" id="soundBtn">♪ 音 ON</button>
+    <button class="btn ghost" id="bgmBtn">♫ BGM OFF</button>
+    <button class="btn ghost" id="achvBtn">実績</button>
+  </div>
+
+  <div class="dpad">
+    <button class="up" data-dir="up">▲</button>
+    <button class="left" data-dir="left">◀</button>
+    <button class="right" data-dir="right">▶</button>
+    <button class="down" data-dir="down">▼</button>
+  </div>
+
+  <div class="hint">
+    <span class="kbd-only">操作: <b>矢印キー</b> / <b>WASD</b> ・ </span>
+    ゴール<b style="color:var(--goal)"> ● </b>を目指そう
+  </div>
+  <div class="hint" id="progress" style="margin-top:2px"></div>
+  <div class="toast" id="toast"></div>
+
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+let cols, rows, cell, grid, player, goal, level = 1;
+let moves = 0, startTime = 0, running = false, timerId = null;
+let hintPath = null, hintFade = 0;
+let trail = new Set();
+let mode = 'normal'; // normal | time
+let timeLimit = 0, remaining = 0, failed = false;
+let fogOn = false;
+let totalCleared = 0;
+let gems = [], gemTotal = 0, starTotal = 0;
+let started = false;
+let door = null, key = null;
+let bgmOn = false, bgmTimer = null, bgmStep = 0;
+let unlocked = {}, lastResult = null;
+const ACHV = [
+  { id: 'first',   name: 'はじめの一歩',     desc: '初クリア',            test: c => totalCleared >= 1 },
+  { id: 'clear10', name: '迷路マスター',       desc: '10ステージクリア',     test: c => totalCleared >= 10 },
+  { id: 'clear30', name: '迷宮の主',           desc: '30ステージクリア',     test: c => totalCleared >= 30 },
+  { id: 'gems10',  name: '宝石ハンター',       desc: '宝石を10個集める',     test: c => gemTotal >= 10 },
+  { id: 'gems50',  name: '宝石王',             desc: '宝石を50個集める',     test: c => gemTotal >= 50 },
+  { id: 'stars10', name: 'スターコレクター',   desc: '★を10個獲得',         test: c => starTotal >= 10 },
+  { id: 'perfect', name: 'パーフェクト',       desc: '★3つでクリア',        test: c => c.stars === 3 },
+  { id: 'speed',   name: 'スピードスター',     desc: 'タイムアタックをクリア', test: c => c.mode === 'time' },
+  { id: 'dark',    name: '闇を照らす者',       desc: '視界モードでクリア',    test: c => c.fog },
+  { id: 'world3',  name: '大冒険家',           desc: 'ワールド3に到達',      test: c => worldOf(level) >= 3 },
+  { id: 'hardcore',name: '不屈の挑戦者',       desc: 'スーパーハードをクリア', test: c => c.mode === 'hard' },
+];
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+const themes = ['', 'aurora', 'sunset', 'mono'];
+const themeNames = { '': 'ネオン', 'aurora': 'オーロラ', 'sunset': 'サンセット', 'mono': 'モノ' };
+let themeIdx = 0;
+
+function sizeForLevel(lv) { return Math.min(8 + (lv - 1) * 2, 26); }
+function isFog() { return fogOn || mode === 'hard'; }
+function modeLabel(m) { return m === 'time' ? 'タイムアタック' : m === 'hard' ? 'スーパーハード' : 'ノーマル'; }
+
+function generateMaze(c, r) {
+  const cells = [];
+  for (let y = 0; y < r; y++) for (let x = 0; x < c; x++)
+    cells.push({ x, y, walls: [true, true, true, true], visited: false });
+  const idx = (x, y) => (x < 0 || y < 0 || x >= c || y >= r) ? -1 : y * c + x;
+  const stack = [];
+  let current = cells[0];
+  current.visited = true;
+  let visitedCount = 1;
+  const total = c * r;
+  while (visitedCount < total) {
+    const { x, y } = current;
+    const neighbors = [];
+    const dirs = [[0,-1,0,2],[1,0,1,3],[0,1,2,0],[-1,0,3,1]];
+    for (const [dx, dy, w, ow] of dirs) {
+      const ni = idx(x + dx, y + dy);
+      if (ni !== -1 && !cells[ni].visited) neighbors.push({ cell: cells[ni], w, ow });
+    }
+    if (neighbors.length) {
+      const pick = neighbors[Math.floor(Math.random() * neighbors.length)];
+      current.walls[pick.w] = false;
+      pick.cell.walls[pick.ow] = false;
+      stack.push(current);
+      current = pick.cell;
+      current.visited = true;
+      visitedCount++;
+    } else current = stack.pop();
+  }
+  return cells;
+}
+
+function cellAt(x, y) { return grid[y * cols + x]; }
+
+function newLevel() {
+  const n = Math.min(sizeForLevel(level) + (mode === 'hard' ? 4 : 0), 30);
+  cols = n; rows = n;
+  grid = generateMaze(cols, rows);
+  player = { x: 0, y: 0, px: 0, py: 0 };
+  goal = { x: cols - 1, y: rows - 1 };
+  moves = 0;
+  // place gems on random open cells (not start/goal)
+  gems = [];
+  const gemCount = Math.min(3, Math.max(2, Math.floor(cols / 4)));
+  const used = new Set(['0,0', goal.x + ',' + goal.y]);
+  let tries = 0;
+  while (gems.length < gemCount && tries < 300) {
+    tries++;
+    const gx = Math.floor(Math.random() * cols), gy = Math.floor(Math.random() * rows);
+    const k = gx + ',' + gy;
+    if (used.has(k)) continue;
+    used.add(k); gems.push({ x: gx, y: gy, got: false });
+  }
+  door = null; key = null;
+  if (level >= 2 || mode === 'hard') placeKeyDoor();
+  trail = new Set(['0,0']);
+  hintPath = null; hintFade = 0;
+  stopTimer(); startTime = 0; failed = false;
+  if (mode === 'time' || mode === 'hard') {
+    // account for the key detour so door levels stay fair
+    const optMoves = key
+      ? bfsDist(0, 0, key.x, key.y) + bfsDist(key.x, key.y, goal.x, goal.y)
+      : solve().length - 1;
+    const factor = mode === 'hard' ? 0.6 : 0.9;
+    timeLimit = Math.max(mode === 'hard' ? 6 : 8, Math.round(optMoves * factor));
+    remaining = timeLimit;
+  }
+  layout();
+  updateStats();
+  document.getElementById('sub').textContent = '迷路パズル ・ WORLD ' + worldOf(level);
+  hideOverlay();
+  draw();
+}
+function worldOf(lv) { return Math.ceil(lv / 5); }
+function applyTheme() {
+  const t = themes[themeIdx];
+  if (t) document.documentElement.setAttribute('data-theme', t);
+  else document.documentElement.removeAttribute('data-theme');
+  document.getElementById('themeBtn').textContent = 'テーマ: ' + themeNames[t];
+}
+
+function layout() {
+  const touch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  const reserve = touch ? 430 : 300;
+  const maxBoard = Math.min(window.innerWidth - 40, window.innerHeight - reserve, 520);
+  const size = Math.max(230, maxBoard);
+  cell = Math.floor(size / cols);
+  const w = cell * cols, h = cell * rows;
+  canvas.width = w * DPR; canvas.height = h * DPR;
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+
+const wallIdx = { up: 0, right: 1, down: 2, left: 3 };
+function nextCell(x, y, dir) {
+  if (cellAt(x, y).walls[wallIdx[dir]]) return null;
+  if (door && door.locked && isDoorEdge(x, y, dir)) return null;
+  const nx = x + (dir === 'right' ? 1 : dir === 'left' ? -1 : 0);
+  const ny = y + (dir === 'down' ? 1 : dir === 'up' ? -1 : 0);
+  if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) return null;
+  return { nx, ny };
+}
+// is there a turn available here (opening perpendicular to travel dir)?
+function hasBranch(x, y, dir) {
+  const c = cellAt(x, y);
+  return (dir === 'up' || dir === 'down') ? (!c.walls[1] || !c.walls[3]) : (!c.walls[0] || !c.walls[2]);
+}
+function stepOne(dir) {
+  const r = nextCell(player.x, player.y, dir);
+  if (!r) return false;
+  player.x = r.nx; player.y = r.ny; moves++;
+  trail.add(r.nx + ',' + r.ny);
+  for (const g of gems) if (!g.got && g.x === r.nx && g.y === r.ny) { g.got = true; sfxGem(); }
+  if (key && !key.got && key.x === r.nx && key.y === r.ny) { key.got = true; door.locked = false; sfxKey(); vib([20, 30]); }
+  return true;
+}
+// glide until a wall, a junction, or the goal
+function move(dir) {
+  if (failed || document.getElementById('overlay').classList.contains('show')) return;
+  if (!running) startTimer();
+  hintPath = null;
+  let moved = false, steps = 0;
+  while (steps < 400 && nextCell(player.x, player.y, dir)) {
+    stepOne(dir); moved = true; steps++;
+    if (player.x === goal.x && player.y === goal.y) break;
+    if (hasBranch(player.x, player.y, dir)) break;
+  }
+  if (!moved) { sfxBump(); return; }
+  sfxMove();
+  updateStats();
+  animateTo(player.x, player.y);
+  if (player.x === goal.x && player.y === goal.y) win();
+}
+
+let animId = null;
+function animateTo(tx, ty) {
+  cancelAnimationFrame(animId);
+  const step = () => {
+    player.px += (tx - player.px) * 0.35;
+    player.py += (ty - player.py) * 0.35;
+    draw();
+    if (Math.abs(tx - player.px) > 0.01 || Math.abs(ty - player.py) > 0.01)
+      animId = requestAnimationFrame(step);
+    else { player.px = tx; player.py = ty; draw(); }
+  };
+  step();
+}
+
+function startTimer() {
+  running = true;
+  startTime = performance.now();
+  clearInterval(timerId);
+  timerId = setInterval(tick, 100);
+}
+function tick() {
+  if (mode === 'time' || mode === 'hard') {
+    remaining = timeLimit - (performance.now() - startTime) / 1000;
+    if (remaining <= 0) { remaining = 0; updateStats(); return timeUp(); }
+  }
+  updateStats();
+}
+function stopTimer() { running = false; clearInterval(timerId); }
+function elapsed() { return startTime ? (performance.now() - startTime) / 1000 : 0; }
+
+function win() {
+  stopTimer();
+  const t = elapsed();
+  const key = 'maze_best_' + level;
+  const prev = parseFloat(lsGet(key) || 'Infinity');
+  let record = false;
+  if (t < prev) { lsSet(key, t.toFixed(1)); record = true; }
+  updateBest();
+  // star rating: base 1, +1 all gems, +1 efficient route
+  const optimalMoves = key
+    ? bfsDist(0, 0, key.x, key.y) + bfsDist(key.x, key.y, goal.x, goal.y)
+    : solve().length - 1;
+  const gotGems = gems.filter(g => g.got).length;
+  const allGems = gems.length > 0 && gotGems === gems.length;
+  let stars = 1;
+  if (allGems) stars++;
+  if (moves <= optimalMoves * 1.4) stars++;
+  stars = Math.max(1, Math.min(3, stars));
+  totalCleared++;
+  gemTotal += gotGems;
+  starTotal += stars;
+  lsSet('maze_total', totalCleared);
+  lsSet('maze_gems', gemTotal);
+  lsSet('maze_stars', starTotal);
+  updateProgress();
+  sfxClear();
+  vib([25, 30, 45]);
+  confettiBurst();
+  const title = document.getElementById('ov-title');
+  title.className = 'big clear-big';
+  const worldClear = level % 5 === 0;
+  title.textContent = worldClear ? `WORLD ${worldOf(level)} 突破!` : (record ? 'NEW RECORD!' : 'CLEAR!');
+  document.getElementById('ov-msg').innerHTML =
+    `<div style="font-size:26px;letter-spacing:4px;margin-bottom:6px">${starStr(stars)}</div>` +
+    `Level ${level} ・ <b>${t.toFixed(1)}秒</b> ・ ${moves}手<br>` +
+    `<span style="color:var(--accent2)">宝石 ${gotGems}/${gems.length}</span>`;
+  document.getElementById('ov-btn').textContent = '次のレベルへ';
+  document.getElementById('ov-btn').onclick = nextLevel;
+  document.getElementById('shareBtn').style.display = '';
+  lastResult = { level, stars, time: t.toFixed(1) };
+  checkAchv({ stars, mode, fog: isFog() });
+  showOverlay();
+}
+
+function timeUp() {
+  stopTimer();
+  failed = true;
+  sfxFail();
+  const title = document.getElementById('ov-title');
+  title.className = 'big fail-big';
+  title.textContent = "TIME UP";
+  document.getElementById('ov-msg').innerHTML = `Level ${level} 時間切れ… もう一度挑戦しよう`;
+  document.getElementById('ov-btn').textContent = 'リトライ';
+  document.getElementById('ov-btn').onclick = () => newLevel();
+  document.getElementById('shareBtn').style.display = 'none';
+  showOverlay();
+}
+
+function nextLevel() {
+  const prevWorld = worldOf(level);
+  level++;
+  if (worldOf(level) !== prevWorld) { themeIdx = (worldOf(level) - 1) % themes.length; applyTheme(); }
+  newLevel();
+}
+
+function solve() {
+  const q = [[0, 0]]; const prev = new Map(); const seen = new Set(['0,0']);
+  while (q.length) {
+    const [x, y] = q.shift();
+    if (x === goal.x && y === goal.y) break;
+    const c = cellAt(x, y);
+    const dirs = [[0,-1,0],[1,0,1],[0,1,2],[-1,0,3]];
+    for (const [dx, dy, w] of dirs) {
+      if (c.walls[w]) continue;
+      const nx = x + dx, ny = y + dy, k = nx + ',' + ny;
+      if (nx<0||ny<0||nx>=cols||ny>=rows||seen.has(k)) continue;
+      seen.add(k); prev.set(k, x + ',' + y); q.push([nx, ny]);
+    }
+  }
+  const path = []; let cur = goal.x + ',' + goal.y;
+  while (cur) { const [x,y]=cur.split(',').map(Number); path.push({x,y}); cur = prev.get(cur); }
+  return path.reverse();
+}
+function bfsPath(sx, sy, tx, ty, blockDoor) {
+  const q = [[sx, sy]], prev = new Map(), seen = new Set([sx + ',' + sy]);
+  while (q.length) {
+    const [x, y] = q.shift();
+    if (x === tx && y === ty) break;
+    const c = cellAt(x, y);
+    if (!c) continue;
+    const dirs = [['up',0,0,-1],['right',1,1,0],['down',2,0,1],['left',3,-1,0]];
+    for (const [dir, w, dx, dy] of dirs) {
+      if (c.walls[w] || (blockDoor && isDoorEdge(x, y, dir))) continue;
+      const nx = x + dx, ny = y + dy, k = nx + ',' + ny;
+      if (nx<0||ny<0||nx>=cols||ny>=rows||seen.has(k)) continue;
+      seen.add(k); prev.set(k, x + ',' + y); q.push([nx, ny]);
+    }
+  }
+  const path = []; let cur = tx + ',' + ty;
+  while (cur !== undefined) { const [x, y] = cur.split(',').map(Number); path.push({ x, y }); cur = prev.get(cur); }
+  return path.reverse();
+}
+function showHint() {
+  if (failed) return;
+  if (key && !key.got) {
+    const a = bfsPath(player.x, player.y, key.x, key.y, true);
+    const b = bfsPath(key.x, key.y, goal.x, goal.y, false);
+    hintPath = a.concat(b.slice(1));
+  } else {
+    hintPath = bfsPath(player.x, player.y, goal.x, goal.y, false);
+  }
+  hintFade = 1; draw();
+}
+
+function bfsDist(sx, sy, tx, ty) {
+  const q = [[sx, sy, 0]], seen = new Set([sx + ',' + sy]);
+  while (q.length) {
+    const [x, y, d] = q.shift();
+    if (x === tx && y === ty) return d;
+    const c = cellAt(x, y);
+    if (!c) continue;
+    const dirs = [[0,0,-1],[1,1,0],[2,0,1],[3,-1,0]];
+    for (const [w, dx, dy] of dirs) {
+      if (c.walls[w]) continue;
+      const nx = x + dx, ny = y + dy, k = nx + ',' + ny;
+      if (nx<0||ny<0||nx>=cols||ny>=rows||seen.has(k)) continue;
+      seen.add(k); q.push([nx, ny, d + 1]);
+    }
+  }
+  return 999;
+}
+function isDoorEdge(x, y, dir) {
+  if (!door) return false;
+  const w = wallIdx[dir];
+  return (x === door.ax && y === door.ay && w === door.wA) ||
+         (x === door.bx && y === door.by && w === door.wB);
+}
+// place a locked door on the goal path; key on the reachable (start) side
+function placeKeyDoor() {
+  const path = solve();
+  if (path.length < 5) return;
+  const i = Math.floor(path.length / 2);
+  const A = path[i - 1], B = path[i];
+  const dx = B.x - A.x, dy = B.y - A.y;
+  let wA, wB;
+  if (dx === 1) { wA = 1; wB = 3; } else if (dx === -1) { wA = 3; wB = 1; }
+  else if (dy === 1) { wA = 2; wB = 0; } else { wA = 0; wB = 2; }
+  door = { ax: A.x, ay: A.y, bx: B.x, by: B.y, wA, wB, locked: true };
+  // start-side component (not crossing the door edge)
+  const startSide = new Set(['0,0']);
+  const q = [[0, 0]];
+  while (q.length) {
+    const [x, y] = q.shift();
+    const c = cellAt(x, y);
+    const dirs = [['up',0,0,-1],['right',1,1,0],['down',2,0,1],['left',3,-1,0]];
+    for (const [dir, w, ddx, ddy] of dirs) {
+      if (c.walls[w] || isDoorEdge(x, y, dir)) continue;
+      const nx = x + ddx, ny = y + ddy, k = nx + ',' + ny;
+      if (nx<0||ny<0||nx>=cols||ny>=rows||startSide.has(k)) continue;
+      startSide.add(k); q.push([nx, ny]);
+    }
+  }
+  const gemKeys = new Set(gems.map(g => g.x + ',' + g.y));
+  const cand = [...startSide].filter(k => k !== '0,0' && !gemKeys.has(k));
+  if (!cand.length) { door = null; return; }
+  const kk = cand[Math.floor(Math.random() * cand.length)].split(',').map(Number);
+  key = { x: kk[0], y: kk[1], got: false };
+}
+
+function updateStats() {
+  document.getElementById('lv').textContent = level;
+  document.getElementById('moves').textContent = moves;
+  const timeStat = document.getElementById('timeStat');
+  const timeEl = document.getElementById('time');
+  timeStat.classList.remove('warn', 'danger');
+  if (mode === 'time' || mode === 'hard') {
+    document.getElementById('timeLabel').textContent = 'Left';
+    const r = running ? remaining : timeLimit;
+    timeEl.textContent = r.toFixed(1);
+    if (r <= 3) timeStat.classList.add('danger');
+    else if (r <= 6) timeStat.classList.add('warn');
+  } else {
+    document.getElementById('timeLabel').textContent = 'Time';
+    timeEl.textContent = elapsed().toFixed(1);
+  }
+  updateBest();
+}
+function updateBest() {
+  const b = lsGet('maze_best_' + level);
+  document.getElementById('best').textContent = b ? b + 's' : '-';
+}
+function starStr(n) {
+  let s = '';
+  for (let i = 1; i <= 3; i++)
+    s += `<span style="color:${i <= n ? 'var(--player)' : 'var(--muted)'}">${i <= n ? '★' : '☆'}</span>`;
+  return s;
+}
+function updateProgress() {
+  const el = document.getElementById('progress');
+  el.innerHTML = totalCleared > 0
+    ? `通算 <b>${totalCleared}</b> クリア ・ <b>★${starTotal}</b> ・ 宝石 <b>${gemTotal}</b>` : '';
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2600);
+}
+function loadAchv() { try { unlocked = JSON.parse(lsGet('maze_achv') || '{}'); } catch(e) { unlocked = {}; } }
+function checkAchv(ctx) {
+  ctx = ctx || {};
+  const newly = [];
+  for (const a of ACHV) if (!unlocked[a.id] && a.test(ctx)) { unlocked[a.id] = 1; newly.push(a); }
+  if (newly.length) {
+    lsSet('maze_achv', JSON.stringify(unlocked));
+    newly.forEach((a, i) => setTimeout(() => toast('実績解除: ' + a.name), 400 + i * 1700));
+  }
+}
+let achvReturn = false;
+function showAchv() {
+  const ov = document.getElementById('overlay');
+  achvReturn = ov.classList.contains('show');
+  ov.classList.remove('show');
+  const list = document.getElementById('badgeList');
+  list.innerHTML = ACHV.map(a => {
+    const got = unlocked[a.id];
+    return `<div class="badge ${got ? '' : 'locked'}"><div class="bi">${got ? '★' : '?'}</div>` +
+           `<div class="bt"><b>${a.name}</b><span>${a.desc}</span></div></div>`;
+  }).join('');
+  document.getElementById('achvCount').textContent = Object.keys(unlocked).length + ' / ' + ACHV.length;
+  document.getElementById('achvOverlay').classList.add('show');
+}
+function shareResult() {
+  if (!lastResult) return;
+  const text = `MAZE で Level ${lastResult.level} を ★${lastResult.stars} / ${lastResult.time}秒 で攻略! 迷路パズル`;
+  const url = location.href;
+  if (navigator.share) {
+    navigator.share({ title: 'MAZE', text, url }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text + ' ' + url).then(() => toast('結果をコピーしました')).catch(() => toast('コピーできませんでした'));
+  } else {
+    toast('シェアに対応していません');
+  }
+}
+function showStart() {
+  const title = document.getElementById('ov-title');
+  title.className = 'big clear-big';
+  title.textContent = 'MAZE';
+  document.getElementById('ov-msg').innerHTML =
+    'スワイプ / 矢印キー で一気に進む<br><span style="color:var(--accent2)">宝石</span>を集め、<span style="color:#fde047">鍵</span>で扉を開けてゴールへ<br>★3つ を狙え';
+  const btn = document.getElementById('ov-btn');
+  btn.textContent = 'スタート';
+  btn.onclick = () => { started = true; hideOverlay(); try { ac().resume(); } catch(e){} beep(660,0.05,'sine',0.08); if (bgmOn) startBGM(); };
+  document.getElementById('shareBtn').style.display = 'none';
+  showOverlay();
+}
+function showOverlay() { document.getElementById('overlay').classList.add('show'); }
+function hideOverlay() { document.getElementById('overlay').classList.remove('show'); }
+
+// ---- rendering ----
+function draw() {
+  const w = cell * cols, h = cell * rows;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = getCss('--path');
+  ctx.fillRect(0, 0, w, h);
+
+  // trail
+  const tCol = getCss('--trail');
+  for (const k of trail) {
+    const [x, y] = k.split(',').map(Number);
+    ctx.fillStyle = hexA(tCol, 0.16);
+    const pad = cell * 0.24;
+    roundRect(x*cell+pad, y*cell+pad, cell-pad*2, cell-pad*2, cell*0.16);
+    ctx.fill();
+  }
+
+  // hint path
+  if (hintPath) {
+    ctx.save();
+    ctx.strokeStyle = hexA(getCss('--accent'), 0.5 * hintFade);
+    ctx.lineWidth = Math.max(3, cell * 0.28);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath();
+    hintPath.forEach((p, i) => {
+      const cx = p.x * cell + cell / 2, cy = p.y * cell + cell / 2;
+      i === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    });
+    ctx.stroke(); ctx.restore();
+    hintFade *= 0.995;
+  }
+
+  // goal
+  const gx = goal.x * cell + cell / 2, gy = goal.y * cell + cell / 2;
+  const pulse = 0.5 + 0.5 * Math.sin(performance.now() / 400);
+  const gr = ctx.createRadialGradient(gx, gy, 1, gx, gy, cell * 0.7);
+  gr.addColorStop(0, hexA(getCss('--goal'), 0.4 + 0.3*pulse));
+  gr.addColorStop(1, hexA(getCss('--goal'), 0));
+  ctx.fillStyle = gr; ctx.fillRect(goal.x*cell, goal.y*cell, cell, cell);
+  ctx.fillStyle = getCss('--goal');
+  ctx.beginPath(); ctx.arc(gx, gy, cell * 0.22, 0, Math.PI * 2); ctx.fill();
+
+  // walls
+  ctx.strokeStyle = getCss('--wall');
+  ctx.lineWidth = Math.max(2, cell * 0.14); ctx.lineCap = 'round';
+  for (const c of grid) {
+    const x = c.x * cell, y = c.y * cell;
+    ctx.beginPath();
+    if (c.walls[0]) { ctx.moveTo(x, y); ctx.lineTo(x + cell, y); }
+    if (c.walls[1]) { ctx.moveTo(x + cell, y); ctx.lineTo(x + cell, y + cell); }
+    if (c.walls[2]) { ctx.moveTo(x + cell, y + cell); ctx.lineTo(x, y + cell); }
+    if (c.walls[3]) { ctx.moveTo(x, y + cell); ctx.lineTo(x, y); }
+    ctx.stroke();
+  }
+
+  // gems
+  const gemT = performance.now() / 500;
+  for (const g of gems) {
+    if (g.got) continue;
+    const cx = g.x * cell + cell / 2, cy = g.y * cell + cell / 2;
+    const s = cell * (0.17 + 0.02 * Math.sin(gemT + g.x + g.y));
+    const glow = ctx.createRadialGradient(cx, cy, 1, cx, cy, cell * 0.5);
+    glow.addColorStop(0, hexA(getCss('--accent2'), 0.5));
+    glow.addColorStop(1, hexA(getCss('--accent2'), 0));
+    ctx.fillStyle = glow; ctx.fillRect(cx - cell*0.5, cy - cell*0.5, cell, cell);
+    ctx.fillStyle = getCss('--accent2');
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - s); ctx.lineTo(cx + s, cy);
+    ctx.lineTo(cx, cy + s); ctx.lineTo(cx - s, cy);
+    ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = hexA('#ffffff', 0.6); ctx.lineWidth = 1; ctx.stroke();
+  }
+
+  // locked door
+  if (door && door.locked) {
+    ctx.strokeStyle = '#f87171';
+    ctx.lineWidth = Math.max(3, cell * 0.2);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    const ax = door.ax, ay = door.ay;
+    if (door.wA === 1) { const ex = (ax + 1) * cell; ctx.moveTo(ex, ay*cell + cell*0.14); ctx.lineTo(ex, ay*cell + cell*0.86); }
+    else if (door.wA === 3) { const ex = ax * cell; ctx.moveTo(ex, ay*cell + cell*0.14); ctx.lineTo(ex, ay*cell + cell*0.86); }
+    else if (door.wA === 2) { const ey = (ay + 1) * cell; ctx.moveTo(ax*cell + cell*0.14, ey); ctx.lineTo(ax*cell + cell*0.86, ey); }
+    else { const ey = ay * cell; ctx.moveTo(ax*cell + cell*0.14, ey); ctx.lineTo(ax*cell + cell*0.86, ey); }
+    ctx.stroke();
+  }
+
+  // key
+  if (key && !key.got) {
+    const kx = key.x * cell + cell / 2, ky = key.y * cell + cell / 2;
+    const glow = ctx.createRadialGradient(kx, ky, 1, kx, ky, cell * 0.5);
+    glow.addColorStop(0, 'rgba(253,224,71,0.5)');
+    glow.addColorStop(1, 'rgba(253,224,71,0)');
+    ctx.fillStyle = glow; ctx.fillRect(kx - cell*0.5, ky - cell*0.5, cell, cell);
+    ctx.strokeStyle = '#fde047'; ctx.lineWidth = Math.max(2, cell * 0.09); ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(kx - cell*0.1, ky, cell * 0.12, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(kx + cell*0.02, ky); ctx.lineTo(kx + cell*0.24, ky);
+    ctx.moveTo(kx + cell*0.24, ky); ctx.lineTo(kx + cell*0.24, ky + cell*0.1);
+    ctx.moveTo(kx + cell*0.16, ky); ctx.lineTo(kx + cell*0.16, ky + cell*0.08);
+    ctx.stroke();
+  }
+
+  // fog of war
+  if (isFog()) {
+    const fx = player.px * cell + cell / 2, fy = player.py * cell + cell / 2;
+    const R = cell * 2.9;
+    const fg = ctx.createRadialGradient(fx, fy, cell * 0.9, fx, fy, R);
+    fg.addColorStop(0, 'rgba(0,0,0,0)');
+    fg.addColorStop(1, hexA(getCss('--bg'), 0.985));
+    ctx.fillStyle = fg;
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = hexA(getCss('--bg'), 0.985);
+    ctx.beginPath();
+    ctx.rect(0, 0, w, h);
+    ctx.arc(fx, fy, R, 0, Math.PI * 2, true);
+    ctx.fill('evenodd');
+    // faint goal beacon so direction is known
+    const bx = goal.x * cell + cell / 2, by = goal.y * cell + cell / 2;
+    ctx.fillStyle = hexA(getCss('--goal'), 0.35 + 0.2 * pulse);
+    ctx.beginPath(); ctx.arc(bx, by, cell * 0.16, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // player
+  const px = player.px * cell + cell / 2, py = player.py * cell + cell / 2;
+  const pg = ctx.createRadialGradient(px, py, 1, px, py, cell * 0.6);
+  pg.addColorStop(0, hexA(getCss('--player'), 0.55));
+  pg.addColorStop(1, hexA(getCss('--player'), 0));
+  ctx.fillStyle = pg; ctx.fillRect(px - cell*0.6, py - cell*0.6, cell*1.2, cell*1.2);
+  ctx.fillStyle = getCss('--player');
+  ctx.beginPath(); ctx.arc(px, py, cell * 0.28, 0, Math.PI * 2); ctx.fill();
+
+  if (hintPath && hintFade > 0.05) requestAnimationFrame(draw);
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.arcTo(x+w, y, x+w, y+h, r);
+  ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r);
+  ctx.arcTo(x, y, x+w, y, r);
+  ctx.closePath();
+}
+function lsGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+function getCss(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function hexA(hex, a) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+setInterval(() => { if (!document.getElementById('overlay').classList.contains('show')) draw(); }, 120);
+
+// ---- confetti ----
+let confetti = [];
+function confettiBurst() {
+  const colors = [getCss('--accent'), getCss('--accent2'), getCss('--player'), getCss('--goal')];
+  confetti = [];
+  for (let i = 0; i < 80; i++) confetti.push({
+    x: canvas.clientWidth/2, y: canvas.clientHeight/2,
+    vx: (Math.random()-0.5)*8, vy: (Math.random()-1)*8 - 2,
+    color: colors[i % colors.length], r: Math.random()*4+2, life: 1
+  });
+  animConfetti();
+}
+function animConfetti() {
+  if (!confetti.length) return;
+  draw();
+  confetti.forEach(p => {
+    p.vy += 0.25; p.x += p.vx; p.y += p.vy; p.life -= 0.012;
+    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, p.r, p.r);
+  });
+  ctx.globalAlpha = 1;
+  confetti = confetti.filter(p => p.life > 0);
+  if (confetti.length) requestAnimationFrame(animConfetti);
+}
+
+// ---- sound (WebAudio) ----
+let audioCtx = null, soundOn = true;
+function ac() { if (!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); return audioCtx; }
+function beep(freq, dur, type='sine', vol=0.15, when=0) {
+  if (!soundOn) return;
+  const a = ac(); const t = a.currentTime + when;
+  const o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(a.destination);
+  o.start(t); o.stop(t + dur + 0.02);
+}
+function sfxMove() { beep(520 + Math.random()*40, 0.06, 'triangle', 0.08); }
+function sfxBump() { beep(120, 0.08, 'square', 0.06); vib(30); }
+function sfxClear() { [523,659,784,1046].forEach((f,i)=>beep(f,0.18,'sine',0.14,i*0.09)); }
+function sfxGem() { beep(1046,0.07,'sine',0.12); beep(1568,0.09,'sine',0.1,0.05); vib(15); }
+function sfxKey() { beep(660,0.1,'triangle',0.12); beep(990,0.14,'triangle',0.11,0.08); }
+
+// ambient BGM: soft pentatonic pad, root shifts per world
+function padNote(freq, dur, vol) {
+  const a = ac(); const t = a.currentTime;
+  const o = a.createOscillator(), g = a.createGain();
+  o.type = 'sine'; o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + 0.18);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(a.destination);
+  o.start(t); o.stop(t + dur + 0.05);
+}
+function bgmTick() {
+  if (!bgmOn) { stopBGM(); return; }
+  const roots = [220.0, 246.94, 196.0, 174.61]; // A3 B3 G3 F3 per world
+  const root = roots[(worldOf(level) - 1) % roots.length];
+  const scale = [0, 2, 4, 7, 9, 12];
+  if (bgmStep % 4 === 0) padNote(root / 2, 1.8, 0.05);
+  const n = scale[Math.floor(Math.random() * scale.length)];
+  padNote(root * Math.pow(2, n / 12), 1.3, 0.04);
+  bgmStep++;
+}
+function startBGM() { if (bgmTimer) return; bgmStep = 0; ac(); bgmTimer = setInterval(bgmTick, 820); bgmTick(); }
+function stopBGM() { clearInterval(bgmTimer); bgmTimer = null; }
+function vib(p) { if (!started) return; try { if (navigator.vibrate) navigator.vibrate(p); } catch(e) {} }
+function sfxFail() { beep(300,0.2,'sawtooth',0.12); beep(180,0.35,'sawtooth',0.12,0.12); }
+
+// ---- input ----
+const keyMap = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right',
+  w:'up', s:'down', a:'left', d:'right', W:'up', S:'down', A:'left', D:'right' };
+window.addEventListener('keydown', e => {
+  if (keyMap[e.key]) { e.preventDefault(); move(keyMap[e.key]); }
+});
+
+let touchStart = null;
+canvas.addEventListener('touchstart', e => {
+  touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+}, { passive: true });
+canvas.addEventListener('touchend', e => {
+  if (!touchStart) return;
+  const dx = e.changedTouches[0].clientX - touchStart.x;
+  const dy = e.changedTouches[0].clientY - touchStart.y;
+  if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return;
+  if (Math.abs(dx) > Math.abs(dy)) move(dx > 0 ? 'right' : 'left');
+  else move(dy > 0 ? 'down' : 'up');
+  touchStart = null;
+}, { passive: true });
+
+document.querySelectorAll('.dpad button').forEach(b =>
+  b.addEventListener('click', () => move(b.dataset.dir)));
+
+document.getElementById('newBtn').addEventListener('click', () => newLevel());
+document.getElementById('hintBtn').addEventListener('click', showHint);
+
+document.getElementById('modeBtn').addEventListener('click', () => {
+  mode = mode === 'normal' ? 'time' : mode === 'time' ? 'hard' : 'normal';
+  document.getElementById('modeBtn').textContent = 'モード: ' + modeLabel(mode);
+  level = 1;
+  saveSettings();
+  newLevel();
+});
+
+document.getElementById('fogBtn').addEventListener('click', () => {
+  fogOn = !fogOn;
+  const b = document.getElementById('fogBtn');
+  b.textContent = '視界: ' + (fogOn ? 'ON' : 'OFF');
+  b.classList.toggle('on', fogOn);
+  saveSettings();
+  draw();
+});
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  themeIdx = (themeIdx + 1) % themes.length;
+  applyTheme();
+  saveSettings();
+  draw();
+});
+
+document.getElementById('soundBtn').addEventListener('click', () => {
+  soundOn = !soundOn;
+  const b = document.getElementById('soundBtn');
+  b.textContent = soundOn ? '♪ 音 ON' : '♪ 音 OFF';
+  b.classList.toggle('on', soundOn);
+  saveSettings();
+  if (soundOn) beep(660, 0.08, 'sine', 0.1);
+});
+
+document.getElementById('bgmBtn').addEventListener('click', () => {
+  bgmOn = !bgmOn;
+  const b = document.getElementById('bgmBtn');
+  b.textContent = bgmOn ? '♫ BGM ON' : '♫ BGM OFF';
+  b.classList.toggle('on', bgmOn);
+  if (bgmOn) startBGM(); else stopBGM();
+  saveSettings();
+});
+
+document.getElementById('achvBtn').addEventListener('click', showAchv);
+document.getElementById('achvClose').addEventListener('click', () => {
+  document.getElementById('achvOverlay').classList.remove('show');
+  if (achvReturn) document.getElementById('overlay').classList.add('show');
+});
+document.getElementById('shareBtn').addEventListener('click', shareResult);
+
+window.addEventListener('resize', () => { layout(); draw(); });
+
+function saveSettings() {
+  lsSet('maze_settings', JSON.stringify({ themeIdx, soundOn, fogOn, mode, bgmOn }));
+}
+function loadSettings() {
+  let s; try { s = JSON.parse(lsGet('maze_settings') || '{}'); } catch(e) { s = {}; }
+  if (typeof s.themeIdx === 'number') themeIdx = s.themeIdx % themes.length;
+  if (typeof s.soundOn === 'boolean') soundOn = s.soundOn;
+  if (typeof s.fogOn === 'boolean') fogOn = s.fogOn;
+  if (typeof s.bgmOn === 'boolean') bgmOn = s.bgmOn;
+  if (s.mode === 'time' || s.mode === 'normal' || s.mode === 'hard') mode = s.mode;
+  applyTheme();
+  const sb = document.getElementById('soundBtn');
+  sb.textContent = soundOn ? '♪ 音 ON' : '♪ 音 OFF'; sb.classList.toggle('on', soundOn);
+  const fb = document.getElementById('fogBtn');
+  fb.textContent = '視界: ' + (fogOn ? 'ON' : 'OFF'); fb.classList.toggle('on', fogOn);
+  const bb = document.getElementById('bgmBtn');
+  bb.textContent = bgmOn ? '♫ BGM ON' : '♫ BGM OFF'; bb.classList.toggle('on', bgmOn);
+  document.getElementById('modeBtn').textContent = 'モード: ' + modeLabel(mode);
+}
+
+loadAchv();
+totalCleared = parseInt(lsGet('maze_total') || '0', 10);
+gemTotal = parseInt(lsGet('maze_gems') || '0', 10);
+starTotal = parseInt(lsGet('maze_stars') || '0', 10);
+loadSettings();
+updateProgress();
+newLevel();
+showStart();
+</script>
+</body>
+</html>
