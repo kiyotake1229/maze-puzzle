@@ -48,7 +48,6 @@ YYYYMMDD_種類_連番_場所_内容.拡張子
 | APP | アプリ本体（`index.html`） |
 | PWA | PWA（`manifest.json` / `sw.js` / アイコン） |
 | IOS | iOSアプリ（`ios-app/`） |
-| TOL | ツール（`tools/`。スライド生成 `tools/slides/` を含む） |
 
 ---
 

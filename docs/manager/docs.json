@@ -1,37 +1,17 @@
 {
-  "next_no": 3,
-  "total": 3,
-  "generated_at": "2026-09-15T12:52:55.072104",
+  "next_no": 2,
+  "total": 1,
+  "generated_at": "2026-09-15T13:53:47.835454",
   "documents": [
     {
-      "no": 2,
-      "date": "2026-09-15",
-      "type": "DOC",
-      "category": "ALL",
-      "title": "プレゼンの進め方（MAZE）",
-      "filename": "20260915_DOC_0002_ALL_プレゼンの進め方（MAZE）.md",
-      "extension": "md",
-      "summary": "岩崎さんに説明するときの台本。**3分版**を基本に、時間がなければ「1分版」だけでも伝わるようにしてある。\nスライド（ https://claude.ai/code/artifact/dad654fa-2ff3-4609-8119-1cb7d7a42d57 ）を画面に出し、手元のスマホでデモする想定。"
-    },
-    {
       "no": 1,
       "date": "2026-09-15",
       "type": "DOC",
       "category": "ALL",
-      "title": "社内説明資料（MAZE）",
-      "filename": "20260915_DOC_0001_ALL_社内説明資料（MAZE）.md",
+      "title": "現状の仕様と構成",
+      "filename": "20260915_DOC_0001_ALL_現状の仕様と構成.md",
       "extension": "md",
-      "summary": "「MAZE」（レベル制の迷路パズル）を岩崎さんに説明するためのスライド（7枚）。ねらい（最小構成でゲームとして成立させる）、遊び方と4モード、続ける仕掛け、画面の構成、現状（PWA・iOSは未対応）、iOS化の手順と費用をまとめている。"
-    },
-    {
-      "no": 1,
-      "date": "2026-09-15",
-      "type": "DOC",
-      "category": "ALL",
-      "title": "社内説明資料（MAZE）",
-      "filename": "20260915_DOC_0001_ALL_社内説明資料（MAZE）.pdf",
-      "extension": "pdf",
-      "summary": ""
+      "summary": "MAZE は、自動で作られる迷路をスワイプやキーで解いていく、レベル制のパズルゲーム。Web版は完成して GitHub Pages で公開中だが、PWA は未対応、iOS アプリ化は未着手。コミット 99e3447 時点の内容。以後の変更は #0002 以降の文書に記録する。"
     }
   ]
 }
