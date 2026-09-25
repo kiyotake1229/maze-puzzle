@@ -349,6 +349,8 @@ function newLevel() {
   draw();
 }
 function worldOf(lv) { return Math.ceil(lv / 5); }
+// progress is kept per mode, so a reload or a mode switch continues where you left off
+function savedLevel(m) { return Math.max(1, parseInt(lsGet('maze_level_' + m) || '1', 10) || 1); }
 function applyTheme() {
   const t = themes[themeIdx];
   if (t) document.documentElement.setAttribute('data-theme', t);
@@ -469,6 +471,7 @@ function win() {
   lsSet('maze_total', totalCleared);
   lsSet('maze_gems', gemTotal);
   lsSet('maze_stars', starTotal);
+  lsSet('maze_level_' + mode, level + 1);
   updateProgress();
   sfxClear();
   vib([25, 30, 45]);
@@ -990,7 +993,7 @@ document.getElementById('modeBtn').addEventListener('click', () => {
   mode = mode === 'normal' ? 'time' : mode === 'time' ? 'hard' : 'normal';
   document.getElementById('modeBtn').textContent = 'モード: ' + modeLabel(mode);
   updateFogBtn();
-  level = 1;
+  level = savedLevel(mode);
   saveSettings();
   newLevel();
 });
@@ -1061,6 +1064,7 @@ totalCleared = parseInt(lsGet('maze_total') || '0', 10);
 gemTotal = parseInt(lsGet('maze_gems') || '0', 10);
 starTotal = parseInt(lsGet('maze_stars') || '0', 10);
 loadSettings();
+level = savedLevel(mode);
 updateProgress();
 newLevel();
 showStart();

@@ -1,8 +1,18 @@
 {
-  "next_no": 6,
-  "total": 5,
-  "generated_at": "2026-09-25T15:23:48.847914",
+  "next_no": 7,
+  "total": 6,
+  "generated_at": "2026-09-25T15:25:54.288552",
   "documents": [
+    {
+      "no": 6,
+      "date": "2026-09-25",
+      "type": "ENH",
+      "category": "APP",
+      "title": "Levelを保存し続きから遊べるようにする",
+      "filename": "20260925_ENH_0006_APP_Levelを保存し続きから遊べるようにする.md",
+      "extension": "md",
+      "summary": "今の Level を保存していなかったため、再読み込みやモードの切り替えで Level 1 に戻っていた。Level をモードごとに保存し、再読み込みしてもモードを切り替えても、続きから遊べるようにした。"
+    },
     {
       "no": 5,
       "date": "2026-09-25",
