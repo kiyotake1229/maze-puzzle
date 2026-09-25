@@ -441,17 +441,15 @@ function elapsed() { return startTime ? (performance.now() - startTime) / 1000 :
 function win() {
   stopTimer();
   const t = elapsed();
-  const key = 'maze_best_' + level;
-  const prev = parseFloat(lsGet(key) || 'Infinity');
+  const bestKey = 'maze_best_' + level;
+  const prev = parseFloat(lsGet(bestKey) || 'Infinity');
   let record = false;
-  if (t < prev) { lsSet(key, t.toFixed(1)); record = true; }
+  if (t < prev) { lsSet(bestKey, t.toFixed(1)); record = true; }
   updateBest();
-  // star rating: base 1, +1 all gems, +1 efficient route
-  const optimalMoves = key
-    ? bfsDist(0, 0, key.x, key.y) + bfsDist(key.x, key.y, goal.x, goal.y)
-    : solve().length - 1;
+  // star rating: base 1, +1 all gems, +1 efficient route (vs the best route taking the same gems)
   const gotGems = gems.filter(g => g.got).length;
   const allGems = gems.length > 0 && gotGems === gems.length;
+  const optimalMoves = bestRoute(gems.reduce((m, g, i) => g.got ? m | 1 << i : m, 0));
   let stars = 1;
   if (allGems) stars++;
   if (moves <= optimalMoves * 1.4) stars++;
@@ -568,6 +566,35 @@ function bfsDist(sx, sy, tx, ty) {
     }
   }
   return 999;
+}
+// fewest cells to reach the goal sliding as move() does, taking at least the gems in `need` (bitmask)
+function bestRoute(need) {
+  const gemAt = new Map(gems.map((g, i) => [g.x + ',' + g.y, i]));
+  const seen = new Set(), buckets = [[[0, 0, 0, key ? 1 : 0]]]; // [x, y, gems taken, door locked]
+  for (let d = 0; d < buckets.length; d++) {
+    for (const s of buckets[d] || []) {
+      if (s === 'goal') return d;
+      const id = s.join();
+      if (seen.has(id)) continue;
+      seen.add(id);
+      for (const dir in wallIdx) {
+        let [x, y, got, locked] = s, steps = 0;
+        while (!cellAt(x, y).walls[wallIdx[dir]] && !(locked && isDoorEdge(x, y, dir))) {
+          x += dir === 'right' ? 1 : dir === 'left' ? -1 : 0;
+          y += dir === 'down' ? 1 : dir === 'up' ? -1 : 0;
+          steps++;
+          if (gemAt.has(x + ',' + y)) got |= 1 << gemAt.get(x + ',' + y);
+          if (locked && x === key.x && y === key.y) locked = 0;
+          if ((x === goal.x && y === goal.y) || hasBranch(x, y, dir)) break;
+        }
+        if (!steps) continue;
+        const atGoal = x === goal.x && y === goal.y;
+        if (atGoal && (got & need) !== need) continue;
+        (buckets[d + steps] = buckets[d + steps] || []).push(atGoal ? 'goal' : [x, y, got, locked]);
+      }
+    }
+  }
+  return Infinity;
 }
 function isDoorEdge(x, y, dir) {
   if (!door) return false;
