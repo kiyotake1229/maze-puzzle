@@ -125,6 +125,7 @@
   }
   .ghost:hover { background: rgba(255,255,255,0.1); }
   .ghost.on { background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #0b1024; }
+  .ghost.fixed { opacity: 0.55; }
 
   .hint { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-align: center; }
   .hint b { color: var(--accent); }
@@ -242,7 +243,7 @@ let cols, rows, cell, grid, player, goal, level = 1;
 let moves = 0, startTime = 0, running = false, timerId = null;
 let hintPath = null, hintFade = 0;
 let trail = new Set();
-let mode = 'normal'; // normal | time
+let mode = 'normal'; // normal | time | hard
 let timeLimit = 0, remaining = 0, failed = false;
 let fogOn = false;
 let totalCleared = 0;
@@ -353,6 +354,13 @@ function applyTheme() {
   if (t) document.documentElement.setAttribute('data-theme', t);
   else document.documentElement.removeAttribute('data-theme');
   document.getElementById('themeBtn').textContent = 'テーマ: ' + themeNames[t];
+}
+// show the actual fog state; super hard is always dark, so the button is locked there
+function updateFogBtn() {
+  const b = document.getElementById('fogBtn');
+  b.textContent = '視界: ' + (isFog() ? 'ON' : 'OFF');
+  b.classList.toggle('on', isFog());
+  b.classList.toggle('fixed', mode === 'hard');
 }
 
 function layout() {
@@ -981,16 +989,16 @@ document.getElementById('hintBtn').addEventListener('click', showHint);
 document.getElementById('modeBtn').addEventListener('click', () => {
   mode = mode === 'normal' ? 'time' : mode === 'time' ? 'hard' : 'normal';
   document.getElementById('modeBtn').textContent = 'モード: ' + modeLabel(mode);
+  updateFogBtn();
   level = 1;
   saveSettings();
   newLevel();
 });
 
 document.getElementById('fogBtn').addEventListener('click', () => {
+  if (mode === 'hard') { toast('スーパーハードは常に暗闇です'); return; }
   fogOn = !fogOn;
-  const b = document.getElementById('fogBtn');
-  b.textContent = '視界: ' + (fogOn ? 'ON' : 'OFF');
-  b.classList.toggle('on', fogOn);
+  updateFogBtn();
   saveSettings();
   draw();
 });
@@ -1042,8 +1050,7 @@ function loadSettings() {
   applyTheme();
   const sb = document.getElementById('soundBtn');
   sb.textContent = soundOn ? '♪ 音 ON' : '♪ 音 OFF'; sb.classList.toggle('on', soundOn);
-  const fb = document.getElementById('fogBtn');
-  fb.textContent = '視界: ' + (fogOn ? 'ON' : 'OFF'); fb.classList.toggle('on', fogOn);
+  updateFogBtn();
   const bb = document.getElementById('bgmBtn');
   bb.textContent = bgmOn ? '♫ BGM ON' : '♫ BGM OFF'; bb.classList.toggle('on', bgmOn);
   document.getElementById('modeBtn').textContent = 'モード: ' + modeLabel(mode);
