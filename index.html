@@ -187,7 +187,7 @@
 
   <div class="topbar">
     <div class="stats">
-      <div class="stat"><div class="label">Level</div><div class="value" id="lv">1</div></div>
+      <div class="stat"><div class="label" id="lvLabel">Level</div><div class="value" id="lv">1</div></div>
       <div class="stat" id="timeStat"><div class="label" id="timeLabel">Time</div><div class="value" id="time">0.0</div></div>
       <div class="stat"><div class="label">Moves</div><div class="value" id="moves">0</div></div>
       <div class="stat"><div class="label">Best</div><div class="value" id="best">-</div></div>
@@ -245,7 +245,8 @@ let cols, rows, cell, grid, player, goal, level = 1;
 let moves = 0, startTime = 0, running = false, timerId = null;
 let hintPath = null, hintFade = 0;
 let trail = new Set();
-let mode = 'normal'; // normal | time | hard
+let mode = 'normal'; // normal | time | hard | daily
+let rand = Math.random, dailyKey = 0; // daily: seeded random + the date (YYYYMMDD) the maze belongs to
 let timeLimit = 0, remaining = 0, failed = false;
 let fogOn = false;
 let totalCleared = 0;
@@ -276,7 +277,19 @@ let themeIdx = 0;
 
 function sizeForLevel(lv) { return Math.min(8 + (lv - 1) * 2, 26); }
 function isFog() { return fogOn || mode === 'hard'; }
-function modeLabel(m) { return m === 'time' ? 'タイムアタック' : m === 'hard' ? 'スーパーハード' : 'ノーマル'; }
+function modeLabel(m) { return m === 'time' ? 'タイムアタック' : m === 'hard' ? 'スーパーハード' : m === 'daily' ? 'デイリー' : 'ノーマル'; }
+// the daily maze is built from the date, so everyone gets the same maze on the same day
+function mulberry32(a) {
+  return () => {
+    a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function todayKey() { const d = new Date(); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); }
+function dailyLabel(k) { return Math.floor(k / 100) % 100 + '/' + k % 100; }
+function bestKeyFor() { return mode === 'daily' ? 'maze_daily_' + dailyKey : 'maze_best_' + level; }
 
 function generateMaze(c, r) {
   const cells = [];
@@ -298,7 +311,7 @@ function generateMaze(c, r) {
       if (ni !== -1 && !cells[ni].visited) neighbors.push({ cell: cells[ni], w, ow });
     }
     if (neighbors.length) {
-      const pick = neighbors[Math.floor(Math.random() * neighbors.length)];
+      const pick = neighbors[Math.floor(rand() * neighbors.length)];
       current.walls[pick.w] = false;
       pick.cell.walls[pick.ow] = false;
       stack.push(current);
@@ -313,7 +326,10 @@ function generateMaze(c, r) {
 function cellAt(x, y) { return grid[y * cols + x]; }
 
 function newLevel() {
-  const n = Math.min(sizeForLevel(level) + (mode === 'hard' ? 4 : 0), 30);
+  const daily = mode === 'daily';
+  if (daily) dailyKey = todayKey();
+  rand = daily ? mulberry32(dailyKey) : Math.random;
+  const n = daily ? 16 : Math.min(sizeForLevel(level) + (mode === 'hard' ? 4 : 0), 30);
   cols = n; rows = n;
   grid = generateMaze(cols, rows);
   player = { x: 0, y: 0, px: 0, py: 0 };
@@ -326,13 +342,13 @@ function newLevel() {
   let tries = 0;
   while (gems.length < gemCount && tries < 300) {
     tries++;
-    const gx = Math.floor(Math.random() * cols), gy = Math.floor(Math.random() * rows);
+    const gx = Math.floor(rand() * cols), gy = Math.floor(rand() * rows);
     const k = gx + ',' + gy;
     if (used.has(k)) continue;
     used.add(k); gems.push({ x: gx, y: gy, got: false });
   }
   door = null; key = null;
-  if (level >= 2 || mode === 'hard') placeKeyDoor();
+  if (level >= 2 || mode === 'hard' || daily) placeKeyDoor();
   trail = new Set(['0,0']);
   hintPath = null; hintFade = 0;
   hintsLeft = mode === 'hard' ? 1 : 3; hintUsed = false; updateHintBtn();
@@ -346,7 +362,7 @@ function newLevel() {
   }
   layout();
   updateStats();
-  document.getElementById('sub').textContent = '迷路パズル ・ WORLD ' + worldOf(level);
+  document.getElementById('sub').textContent = daily ? '迷路パズル ・ デイリー ' + dailyLabel(dailyKey) : '迷路パズル ・ WORLD ' + worldOf(level);
   hideOverlay();
   draw();
 }
@@ -459,7 +475,8 @@ function elapsed() { return startTime ? (performance.now() - startTime) / 1000 :
 function win() {
   stopTimer();
   const t = elapsed();
-  const bestKey = 'maze_best_' + level;
+  const daily = mode === 'daily';
+  const bestKey = bestKeyFor();
   const prev = parseFloat(lsGet(bestKey) || 'Infinity');
   let record = false;
   if (t < prev) { lsSet(bestKey, t.toFixed(1)); record = true; }
@@ -473,31 +490,35 @@ function win() {
   if (moves <= optimalMoves * 1.4) stars++;
   stars = Math.max(1, Math.min(3, stars));
   if (hintUsed) stars = Math.min(stars, 2);
-  totalCleared++;
-  gemTotal += gotGems;
-  starTotal += stars;
-  lsSet('maze_total', totalCleared);
-  lsSet('maze_gems', gemTotal);
-  lsSet('maze_stars', starTotal);
-  lsSet('maze_level_' + mode, level + 1);
+  // the daily maze adds to the totals only on its first clear of the day
+  if (!daily || prev === Infinity) {
+    totalCleared++;
+    gemTotal += gotGems;
+    starTotal += stars;
+    lsSet('maze_total', totalCleared);
+    lsSet('maze_gems', gemTotal);
+    lsSet('maze_stars', starTotal);
+  }
+  if (!daily) lsSet('maze_level_' + mode, level + 1);
   updateProgress();
   sfxClear();
   vib([25, 30, 45]);
   confettiBurst();
   const title = document.getElementById('ov-title');
   title.className = 'big clear-big';
-  const worldClear = level % 5 === 0;
-  title.textContent = worldClear ? `WORLD ${worldOf(level)} 突破!` : (record ? 'NEW RECORD!' : 'CLEAR!');
+  const worldClear = !daily && level % 5 === 0;
+  title.textContent = daily && prev === Infinity ? 'DAILY CLEAR!'
+    : worldClear ? `WORLD ${worldOf(level)} 突破!` : (record ? 'NEW RECORD!' : 'CLEAR!');
   document.getElementById('ov-msg').innerHTML =
     `<div style="font-size:26px;letter-spacing:4px;margin-bottom:6px">${starStr(stars)}</div>` +
-    `Level ${level} ・ <b>${t.toFixed(1)}秒</b> ・ ${moves}手<br>` +
+    `${daily ? 'デイリー ' + dailyLabel(dailyKey) : 'Level ' + level} ・ <b>${t.toFixed(1)}秒</b> ・ ${moves}手<br>` +
     `<span style="color:var(--accent2)">宝石 ${gotGems}/${gems.length}</span>` +
     (hintUsed ? '<br><span style="font-size:12px">ヒント使用（★は2つまで）</span>' : '');
-  document.getElementById('ov-btn').textContent = '次のレベルへ';
-  document.getElementById('ov-btn').onclick = nextLevel;
+  document.getElementById('ov-btn').textContent = daily ? 'もう一度' : '次のレベルへ';
+  document.getElementById('ov-btn').onclick = daily ? () => newLevel() : nextLevel;
   document.getElementById('shareBtn').style.display = '';
   document.getElementById('restartBtn').style.display = 'none';
-  lastResult = { level, stars, time: t.toFixed(1) };
+  lastResult = { level, stars, time: t.toFixed(1), daily: daily ? dailyLabel(dailyKey) : null };
   checkAchv({ stars, mode, fog: isFog() });
   showOverlay();
 }
@@ -660,12 +681,13 @@ function placeKeyDoor() {
   const gemKeys = new Set(gems.map(g => g.x + ',' + g.y));
   const cand = [...startSide].filter(k => k !== '0,0' && !gemKeys.has(k));
   if (!cand.length) { door = null; return; }
-  const kk = cand[Math.floor(Math.random() * cand.length)].split(',').map(Number);
+  const kk = cand[Math.floor(rand() * cand.length)].split(',').map(Number);
   key = { x: kk[0], y: kk[1], got: false };
 }
 
 function updateStats() {
-  document.getElementById('lv').textContent = level;
+  document.getElementById('lvLabel').textContent = mode === 'daily' ? 'Daily' : 'Level';
+  document.getElementById('lv').textContent = mode === 'daily' ? dailyLabel(dailyKey) : level;
   document.getElementById('moves').textContent = moves;
   const timeStat = document.getElementById('timeStat');
   const timeEl = document.getElementById('time');
@@ -683,7 +705,7 @@ function updateStats() {
   updateBest();
 }
 function updateBest() {
-  const b = lsGet('maze_best_' + level);
+  const b = lsGet(bestKeyFor());
   document.getElementById('best').textContent = b ? b + 's' : '-';
 }
 function starStr(n) {
@@ -728,7 +750,9 @@ function showAchv() {
 }
 function shareResult() {
   if (!lastResult) return;
-  const text = `MAZE で Level ${lastResult.level} を ★${lastResult.stars} / ${lastResult.time}秒 で攻略! 迷路パズル`;
+  const text = lastResult.daily
+    ? `MAZE デイリー ${lastResult.daily} を ★${lastResult.stars} / ${lastResult.time}秒 でクリア! 迷路パズル`
+    : `MAZE で Level ${lastResult.level} を ★${lastResult.stars} / ${lastResult.time}秒 で攻略! 迷路パズル`;
   const url = location.href;
   if (navigator.share) {
     navigator.share({ title: 'MAZE', text, url }).catch(() => {});
@@ -745,10 +769,11 @@ function showStart() {
   document.getElementById('ov-msg').innerHTML =
     'スワイプ / 矢印キー で一気に進む<br><span style="color:var(--accent2)">宝石</span>を集め、<span style="color:#fde047">鍵</span>で扉を開けてゴールへ<br>★3つ を狙え';
   const btn = document.getElementById('ov-btn');
-  btn.textContent = level > 1 ? `続きから（Level ${level}）` : 'スタート';
+  const resume = mode !== 'daily' && level > 1;
+  btn.textContent = resume ? `続きから（Level ${level}）` : 'スタート';
   btn.onclick = startGame;
   document.getElementById('shareBtn').style.display = 'none';
-  document.getElementById('restartBtn').style.display = level > 1 ? '' : 'none';
+  document.getElementById('restartBtn').style.display = resume ? '' : 'none';
   showOverlay();
 }
 function startGame() { started = true; hideOverlay(); try { ac().resume(); } catch(e){} beep(660,0.05,'sine',0.08); if (bgmOn) startBGM(); }
@@ -1026,7 +1051,7 @@ document.getElementById('newBtn').addEventListener('click', () => newLevel());
 document.getElementById('hintBtn').addEventListener('click', showHint);
 
 document.getElementById('modeBtn').addEventListener('click', () => {
-  mode = mode === 'normal' ? 'time' : mode === 'time' ? 'hard' : 'normal';
+  mode = mode === 'normal' ? 'time' : mode === 'time' ? 'hard' : mode === 'hard' ? 'daily' : 'normal';
   document.getElementById('modeBtn').textContent = 'モード: ' + modeLabel(mode);
   updateFogBtn();
   level = savedLevel(mode);
@@ -1086,7 +1111,7 @@ function loadSettings() {
   if (typeof s.soundOn === 'boolean') soundOn = s.soundOn;
   if (typeof s.fogOn === 'boolean') fogOn = s.fogOn;
   if (typeof s.bgmOn === 'boolean') bgmOn = s.bgmOn;
-  if (s.mode === 'time' || s.mode === 'normal' || s.mode === 'hard') mode = s.mode;
+  if (['normal', 'time', 'hard', 'daily'].includes(s.mode)) mode = s.mode;
   applyTheme();
   const sb = document.getElementById('soundBtn');
   sb.textContent = soundOn ? '♪ 音 ON' : '♪ 音 OFF'; sb.classList.toggle('on', soundOn);
