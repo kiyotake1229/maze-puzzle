@@ -338,10 +338,8 @@ function newLevel() {
   hintsLeft = mode === 'hard' ? 1 : 3; hintUsed = false; updateHintBtn();
   stopTimer(); startTime = 0; failed = false;
   if (mode === 'time' || mode === 'hard') {
-    // account for the key detour so door levels stay fair
-    const optMoves = key
-      ? bfsDist(0, 0, key.x, key.y) + bfsDist(key.x, key.y, goal.x, goal.y)
-      : solve().length - 1;
+    // time for the best route through the key and every gem, so ★3 can be made in time
+    const optMoves = bestRoute((1 << gems.length) - 1);
     const factor = mode === 'hard' ? 0.6 : 0.9;
     timeLimit = Math.max(mode === 'hard' ? 6 : 8, Math.round(optMoves * factor));
     remaining = timeLimit;
