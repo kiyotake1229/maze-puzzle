@@ -1,8 +1,18 @@
 {
-  "next_no": 9,
-  "total": 8,
-  "generated_at": "2026-09-25T15:34:19.352617",
+  "next_no": 10,
+  "total": 9,
+  "generated_at": "2026-09-25T15:34:54.744466",
   "documents": [
+    {
+      "no": 9,
+      "date": "2026-09-25",
+      "type": "REF",
+      "category": "ALL",
+      "title": "古いコピーmaze-artifact.htmlを削除",
+      "filename": "20260925_REF_0009_ALL_古いコピーmaze-artifact.htmlを削除.md",
+      "extension": "md",
+      "summary": "以前 Claude Artifact に載せるために作った `index.html` の古いコピー `maze-artifact.html` を削除した。README で不要とされていたが、本番（GitHub Pages）の URL で誰でも開ける状態のままだった。#0002〜#0008 の修正が入っていない古い版が公開され続けるのを避けるため、削除した。"
+    },
     {
       "no": 8,
       "date": "2026-09-25",

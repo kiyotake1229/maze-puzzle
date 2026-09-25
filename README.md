@@ -48,16 +48,10 @@
 ```
 MAZE/
   index.html            アプリ本体（PWA用のmetaタグは設定済み）
-  maze-artifact.html    index.html の Artifact 公開用コピー（下記参照）
   report.html           開発報告書（岩崎さん向け。ブラウザで開ける）
 ```
 
-### `maze-artifact.html` について
-
-`index.html` から `<!DOCTYPE>` `<html>` `<head>` を取り除いたもの。以前は Claude Artifact に公開する際にこの形式が必要だった。
-**現在は `index.html` をそのまま公開できる**ため、このファイルは不要になっている。`index.html` を更新してもこちらは更新されないので、内容が古い可能性がある。
-
-→ 削除して問題ない。残す場合は `index.html` と同期が取れていないことを前提に扱う。
+以前あった `maze-artifact.html`（Artifact 公開用の古いコピー）は、`index.html` をそのまま公開できるようになって不要になったため削除した（docs #0009）。
 
 ## iOS化までに必要なこと
 
