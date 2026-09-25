@@ -1,0 +1,9 @@
+{
+  "appId": "work.ltv.maze",
+  "appName": "MAZE",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#0f1226"
+  }
+}

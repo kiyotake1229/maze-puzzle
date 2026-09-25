@@ -425,7 +425,7 @@ function stepOne(dir) {
   player.x = r.nx; player.y = r.ny; moves++;
   trail.add(r.nx + ',' + r.ny);
   for (const g of gems) if (!g.got && g.x === r.nx && g.y === r.ny) { g.got = true; sfxGem(); }
-  if (key && !key.got && key.x === r.nx && key.y === r.ny) { key.got = true; door.locked = false; sfxKey(); vib([20, 30]); }
+  if (key && !key.got && key.x === r.nx && key.y === r.ny) { key.got = true; door.locked = false; sfxKey(); vib([20, 30], 'MEDIUM'); }
   return true;
 }
 // glide until a wall, a junction, or the goal
@@ -507,7 +507,7 @@ function win() {
   if (!daily) lsSet('maze_level_' + mode, level + 1);
   updateProgress();
   sfxClear();
-  vib([25, 30, 45]);
+  vib([25, 30, 45], 'SUCCESS');
   confettiBurst();
   const title = document.getElementById('ov-title');
   title.className = 'big clear-big';
@@ -532,6 +532,7 @@ function timeUp() {
   stopTimer();
   failed = true;
   sfxFail();
+  vib([60, 40, 60], 'ERROR');
   const title = document.getElementById('ov-title');
   title.className = 'big fail-big';
   title.textContent = "TIME UP";
@@ -997,9 +998,9 @@ function beep(freq, dur, type='sine', vol=0.15, when=0) {
   o.start(t); o.stop(t + dur + 0.02);
 }
 function sfxMove() { beep(520 + Math.random()*40, 0.06, 'triangle', 0.08); }
-function sfxBump() { beep(120, 0.08, 'square', 0.06); vib(30); }
+function sfxBump() { beep(120, 0.08, 'square', 0.06); vib(30, 'MEDIUM'); }
 function sfxClear() { [523,659,784,1046].forEach((f,i)=>beep(f,0.18,'sine',0.14,i*0.09)); }
-function sfxGem() { beep(1046,0.07,'sine',0.12); beep(1568,0.09,'sine',0.1,0.05); vib(15); }
+function sfxGem() { beep(1046,0.07,'sine',0.12); beep(1568,0.09,'sine',0.1,0.05); vib(15, 'LIGHT'); }
 function sfxKey() { beep(660,0.1,'triangle',0.12); beep(990,0.14,'triangle',0.11,0.08); }
 
 // ambient BGM: soft pentatonic pad, root shifts per world
@@ -1025,7 +1026,22 @@ function bgmTick() {
 }
 function startBGM() { if (bgmTimer) return; bgmStep = 0; ac(); bgmTimer = setInterval(bgmTick, 820); bgmTick(); }
 function stopBGM() { clearInterval(bgmTimer); bgmTimer = null; }
-function vib(p) { if (!started) return; try { if (navigator.vibrate) navigator.vibrate(p); } catch(e) {} }
+// vibration: native haptics inside the iOS app (Capacitor), navigator.vibrate on the web (Android)
+const NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+const CAP = (window.Capacitor && window.Capacitor.Plugins) || {};
+function vib(p, kind) {
+  if (!started) return;
+  try {
+    if (NATIVE && CAP.Haptics) {
+      const r = kind === 'SUCCESS' || kind === 'ERROR'
+        ? CAP.Haptics.notification({ type: kind })
+        : CAP.Haptics.impact({ style: kind || 'LIGHT' });
+      if (r && r.catch) r.catch(() => {});
+      return;
+    }
+    if (navigator.vibrate) navigator.vibrate(p);
+  } catch(e) {}
+}
 function sfxFail() { beep(300,0.2,'sawtooth',0.12); beep(180,0.35,'sawtooth',0.12,0.12); }
 
 // ---- input ----
@@ -1127,7 +1143,6 @@ function loadSettings() {
 }
 
 // offline start (PWA). Not used inside the iOS app (Capacitor) or where service workers are unavailable
-const NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 if ('serviceWorker' in navigator && !NATIVE) navigator.serviceWorker.register('sw.js').catch(() => {});
 
 loadAchv();

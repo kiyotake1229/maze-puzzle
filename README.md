@@ -10,7 +10,8 @@
 | 通信 | なし（完全オフライン） |
 | データ | 端末内のみ |
 | PWA | 対応済み（ホーム画面に追加可。一度開けば通信なしで起動。docs #0014） |
-| iOS | 未着手 |
+| iOS | プロジェクト作成済み（`ios-app/`。Bundle ID `work.ltv.maze`）。Xcode でのビルドは未確認。手順は [ios-app/岩崎さんへの引き渡し手順.md](ios-app/岩崎さんへの引き渡し手順.md) |
+| サポート | https://kiyotake1229.github.io/maze-puzzle/support.html （プライバシーポリシーを含む） |
 
 ---
 
@@ -55,14 +56,19 @@ MAZE/
   icon-192.png / icon-512.png / icon-512-maskable.png / apple-touch-icon.png
                         icon.svg から作った PNG（bash tools/make-icons.sh で作り直せる）
   tools/make-icons.sh   アイコンの書き出しスクリプト（要 Node.js）
+  support.html          サポートページ（遊び方・よくある質問・プライバシーポリシー・問い合わせ先）
   report.html           開発報告書（2026-08-21 時点。岩崎さん向け。ブラウザで開ける）
+  ios-app/              iOS アプリ（Capacitor 7）。岩崎さんへの引き渡し手順.md あり
+                        node_modules/ は Dropbox を軽くするため消してある（使うときは npm install）
 ```
 
 以前あった `maze-artifact.html`（Artifact 公開用の古いコピー）は、`index.html` をそのまま公開できるようになって不要になったため削除した（docs #0009）。
 
-## iOS化までに必要なこと
+## iOS化の状況
 
 1. ~~アイコン作成（`icon.svg` → 192 / 512 / apple-touch-icon）~~ 済み（#0014）
 2. ~~PWA対応（`manifest.json` / `sw.js`）~~ 済み（#0014）
-3. `ios-app/` の構築 — [../CLAUDE.md](../CLAUDE.md) の5章
-4. 触覚フィードバックの組み込み（審査対策）
+3. ~~`ios-app/` の構築~~ 済み（#0016）
+4. ~~触覚フィードバックの組み込み（審査対策）~~ 済み（#0016）
+5. ~~サポートページ・プライバシーポリシー~~ 済み（#0015）
+6. **残り**: Xcode でのビルドと実機確認、スクリーンショット撮影、App Store 申請 — [ios-app/岩崎さんへの引き渡し手順.md](ios-app/岩崎さんへの引き渡し手順.md)

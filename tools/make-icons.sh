@@ -11,7 +11,14 @@ $R --fit-width 180 icon.svg apple-touch-icon.png
 # マスカブル: Android などで丸く切り抜かれても欠けないよう、絵を中央に 72% の大きさで置く
 sed -e 's|<path d="M86|<g transform="translate(128 128) scale(0.72) translate(-128 -128)"><path d="M86|' \
     -e 's|</svg>|</g></svg>|' icon.svg | $R --fit-width 512 - icon-512-maskable.png
-# iOS アプリ用の元画像（ios-app/ がある場合）。この画像から npm run icons でアイコン一式を作る
-if [ -d ios-app/assets ]; then $R --fit-width 1024 icon.svg ios-app/assets/icon.png; fi
+# iOS アプリ用の元画像（ios-app/ がある場合）。ios-app で npm run icons を実行すると、ここからアイコンと起動画面を作る
+if [ -d ios-app/assets ]; then
+  $R --fit-width 1024 icon.svg ios-app/assets/icon-only.png
+  # 起動画面（2732×2732）: 紺の地の中央に、アイコンの絵（背景の四角なし）を置く
+  sed -e 's|width="512" height="512" viewBox="0 0 256 256"|width="2732" height="2732" viewBox="0 0 2732 2732"|' \
+      -e 's|<rect width="256" height="256" fill="#12163a"/>|<rect width="2732" height="2732" fill="#0f1226"/><g transform="translate(1366 1366) scale(2.4) translate(-128 -128)">|' \
+      -e 's|</svg>|</g></svg>|' icon.svg | $R - ios-app/assets/splash.png
+  cp ios-app/assets/splash.png ios-app/assets/splash-dark.png
+fi
 
 echo "アイコンを作り直しました"

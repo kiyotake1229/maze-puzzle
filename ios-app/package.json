@@ -1,0 +1,22 @@
+{
+  "name": "maze-ios",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MAZE 迷路パズル iOSアプリ (Capacitorラッパー)",
+  "scripts": {
+    "sync-web": "bash sync-web.sh",
+    "add-ios": "npm run sync-web && npx cap add ios && npx cap sync ios",
+    "sync": "npm run sync-web && npx cap sync ios",
+    "open": "npx cap open ios",
+    "icons": "npx @capacitor/assets generate --ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.6.9",
+    "@capacitor/haptics": "^7.0.5",
+    "@capacitor/ios": "^7.6.9"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^7.6.9"
+  }
+}
