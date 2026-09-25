@@ -1,8 +1,18 @@
 {
-  "next_no": 14,
-  "total": 13,
-  "generated_at": "2026-09-25T15:49:07.110786",
+  "next_no": 15,
+  "total": 14,
+  "generated_at": "2026-09-25T15:54:42.067318",
   "documents": [
+    {
+      "no": 14,
+      "date": "2026-09-25",
+      "type": "NEW",
+      "category": "PWA",
+      "title": "PWA対応とアイコンの作成",
+      "filename": "20260925_NEW_0014_PWA_PWA対応とアイコンの作成.md",
+      "extension": "md",
+      "summary": "ホーム画面に追加してアプリとして使えるように、`manifest.json`（アプリの名前・アイコンの情報）と `sw.js`（Service Worker。通信なしで起動するための仕組み）を追加した。アイコンは、これまで index.html に埋め込んでいた画像と同じデザインを SVG で作り直し、各サイズの PNG を作った。一度開けば、通信できなくても起動できる。"
+    },
     {
       "no": 13,
       "date": "2026-09-25",

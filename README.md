@@ -6,10 +6,10 @@
 |---|---|
 | 状態 | Web版 完成 |
 | Web公開 | https://kiyotake1229.github.io/maze-puzzle/ （GitHub Pages） |
-| 本体 | `index.html`（約54KB） |
+| 本体 | `index.html`（約48KB） |
 | 通信 | なし（完全オフライン） |
 | データ | 端末内のみ |
-| PWA | 未対応 |
+| PWA | 対応済み（ホーム画面に追加可。一度開けば通信なしで起動。docs #0014） |
 | iOS | 未着手 |
 
 ---
@@ -48,15 +48,21 @@
 
 ```
 MAZE/
-  index.html            アプリ本体（PWA用のmetaタグは設定済み）
-  report.html           開発報告書（岩崎さん向け。ブラウザで開ける）
+  index.html            アプリ本体（HTML・CSS・JavaScript を1ファイルに）
+  manifest.json         PWA の設定（名前・アイコン）
+  sw.js                 Service Worker（通信なしで起動するための保存。更新時は CACHE の番号を上げる）
+  icon.svg              アイコンの元データ
+  icon-192.png / icon-512.png / icon-512-maskable.png / apple-touch-icon.png
+                        icon.svg から作った PNG（bash tools/make-icons.sh で作り直せる）
+  tools/make-icons.sh   アイコンの書き出しスクリプト（要 Node.js）
+  report.html           開発報告書（2026-08-21 時点。岩崎さん向け。ブラウザで開ける）
 ```
 
 以前あった `maze-artifact.html`（Artifact 公開用の古いコピー）は、`index.html` をそのまま公開できるようになって不要になったため削除した（docs #0009）。
 
 ## iOS化までに必要なこと
 
-1. アイコン作成（`icon.svg` → 192 / 512 / apple-touch-icon）
-2. PWA対応（`manifest.json` / `sw.js`）— `mahjong/` のものを写して書き換え
+1. ~~アイコン作成（`icon.svg` → 192 / 512 / apple-touch-icon）~~ 済み（#0014）
+2. ~~PWA対応（`manifest.json` / `sw.js`）~~ 済み（#0014）
 3. `ios-app/` の構築 — [../CLAUDE.md](../CLAUDE.md) の5章
 4. 触覚フィードバックの組み込み（審査対策）
