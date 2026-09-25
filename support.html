@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f1226">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>MAZE サポート</title>
+<style>
+  :root {
+    --bg: #0f1226; --card: rgba(255,255,255,0.04); --line: rgba(255,255,255,0.1);
+    --text: #e5e7ff; --muted: #8b90c4; --accent: #5eead4; --accent2: #a78bfa;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; color: var(--text); line-height: 1.8; font-size: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    background: radial-gradient(1000px 600px at 20% -10%, #232a63 0%, transparent 60%), var(--bg);
+    background-attachment: fixed;
+  }
+  a { color: var(--accent); }
+  header, main, footer { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+  header { text-align: center; padding-top: max(40px, env(safe-area-inset-top)); }
+  header img { width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 16px 40px -12px rgba(0,0,0,0.7); }
+  h1 {
+    margin: 14px 0 0; font-size: 30px; letter-spacing: 6px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .tagline { color: var(--muted); margin: 4px 0 18px; }
+  .play {
+    display: inline-block; padding: 11px 28px; border-radius: 999px; font-weight: 700; text-decoration: none;
+    color: #0b1024; background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: transform 0.15s ease, filter 0.2s ease;
+  }
+  .play:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 22px 0 8px; }
+  nav a {
+    font-size: 13px; color: var(--text); text-decoration: none; padding: 6px 14px; border-radius: 999px;
+    background: var(--card); border: 1px solid var(--line); transition: background 0.2s;
+  }
+  nav a:hover { background: rgba(255,255,255,0.1); }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 6px 20px 16px; margin: 16px 0; scroll-margin-top: 16px;
+  }
+  h2 { font-size: 18px; margin: 14px 0 6px; }
+  h3 { font-size: 15px; margin: 16px 0 2px; color: var(--accent); }
+  p { margin: 6px 0; }
+  ul { margin: 6px 0; padding-left: 1.3em; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; white-space: nowrap; width: 7em; }
+  .small { font-size: 13px; color: var(--muted); }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 20px 16px max(28px, env(safe-area-inset-bottom)); }
+</style>
+</head>
+<body>
+<header>
+  <img src="apple-touch-icon.png" alt="MAZE のアイコン">
+  <h1>MAZE</h1>
+  <p class="tagline">迷路パズル ― スワイプで一気に駆け抜けろ</p>
+  <a class="play" href="./">ブラウザで遊ぶ</a>
+  <nav>
+    <a href="#about">アプリについて</a>
+    <a href="#howto">遊び方</a>
+    <a href="#faq">よくある質問</a>
+    <a href="#privacy">プライバシーポリシー</a>
+    <a href="#contact">お問い合わせ</a>
+  </nav>
+</header>
+
+<main>
+  <section id="about">
+    <h2>アプリについて</h2>
+    <p>自動で作られる迷路を、スワイプで一気に駆け抜けるパズルです。宝石を集め、鍵で扉を開けてゴールを目指します。iPhone・Android・PC のブラウザで遊べ、ホーム画面に追加するとアプリとして起動します（一度開けば、通信がなくても遊べます）。</p>
+    <table>
+      <tr><th>モード</th><td>ノーマル／タイムアタック／スーパーハード（暗闇）／デイリー（日替わり迷路）</td></tr>
+      <tr><th>記録</th><td>各レベルの最速タイム、通算のクリア数・★・宝石、実績（11種）。すべて端末の中に保存</td></tr>
+      <tr><th>通信</th><td>なし（「結果をシェア」を押したときだけ、端末の共有機能を使います）</td></tr>
+      <tr><th>料金</th><td>無料。広告・課金なし</td></tr>
+    </table>
+  </section>
+
+  <section id="howto">
+    <h2>遊び方</h2>
+    <h3>操作</h3>
+    <p>スワイプ（スマホ）、十字ボタン、矢印キーまたは WASD キー（PC）で動きます。1回の操作で、壁・分かれ道・ゴールのどれかに着くまで一気に進みます。</p>
+    <h3>宝石・鍵と扉</h3>
+    <p>通るだけで宝石が取れます。Level 2 からは赤い扉があり、先に鍵を取らないと通れません。</p>
+    <h3>★の付き方</h3>
+    <ul>
+      <li>クリアで ★1</li>
+      <li>宝石を全部取ると ＋1</li>
+      <li>遠回りしなければ ＋1（取った宝石を回る最短ルートの 1.4 倍以内）</li>
+      <li>ヒントを使った迷路は ★2 まで</li>
+    </ul>
+    <h3>モード</h3>
+    <ul>
+      <li><b>ノーマル</b>: 時間制限なし。クリアするたびに迷路が広くなります</li>
+      <li><b>タイムアタック</b>: 制限時間あり</li>
+      <li><b>スーパーハード</b>: 迷路が広く、制限時間が短く、いつも暗闇（自分の周りしか見えません）</li>
+      <li><b>デイリー</b>: その日の迷路。同じ日なら誰でも同じ迷路なので、タイムを比べられます</li>
+    </ul>
+    <h3>ヒント</h3>
+    <p>ゴールまでの道を表示します。1つの迷路で3回まで（スーパーハードは1回）使えます。</p>
+  </section>
+
+  <section id="faq">
+    <h2>よくある質問</h2>
+    <h3>記録が消えました</h3>
+    <p>記録は端末の中（ブラウザの保存領域）にだけあります。ブラウザの「サイトデータの削除」、シークレットモード、別のブラウザや別の端末では引き継がれません。</p>
+    <h3>Level 1 からやり直したい</h3>
+    <p>起動時のスタート画面で「Level 1 から」を押し、3秒以内にもう一度押してください。今のモードだけが Level 1 に戻ります（通算の記録や実績は消えません）。</p>
+    <h3>音が出ません</h3>
+    <p>画面下の「音」「BGM」ボタンを確かめてください。iPhone は本体のサイレントスイッチが入っていると音が出ません。</p>
+    <h3>振動しません</h3>
+    <p>iPhone のブラウザ版は振動に対応していません（iOS アプリ版で対応）。Android は端末の設定で振動が許可されている必要があります。</p>
+    <h3>デイリーの迷路が友だちと違います</h3>
+    <p>迷路は端末の日付で決まります。端末の日付と、アプリが最新の状態か（ページの再読み込み）を確かめてください。アプリを更新した日は、更新前と更新後で迷路が変わることがあります。</p>
+  </section>
+
+  <section id="privacy">
+    <h2>プライバシーポリシー</h2>
+    <p class="small">制定日：2026年9月25日</p>
+    <h3>1. 収集する情報</h3>
+    <p>本アプリ（MAZE。ブラウザ版・iOS アプリ版）は、利用者の個人情報を収集しません。アカウント登録はなく、アクセス解析・広告・トラッキングの仕組みも入れていません。開発者がサーバーで利用者のデータを受け取ることも、保存することもありません。</p>
+    <h3>2. 端末の中に保存する情報</h3>
+    <p>最速タイム、通算のクリア数・★・宝石、実績、進み具合（Level）、設定（モード・テーマ・音など）は、利用者の端末の保存領域（ブラウザの localStorage、アプリ版は同等の領域）にのみ保存されます。ブラウザのサイトデータの削除やアプリの削除で消えます。</p>
+    <h3>3. 通信</h3>
+    <p>本アプリは遊んでいる間に外部と通信しません。「結果をシェア」を押したときだけ、結果の文面（例: 「MAZE デイリー 9/25 を ★3 / 45.2秒 でクリア!」）とアプリの URL を端末の共有機能またはクリップボードに渡します。どこへ送るかは利用者が選び、開発者には送られません。</p>
+    <h3>4. このポリシーの変更</h3>
+    <p>内容を変える場合は、このページでお知らせします。</p>
+  </section>
+
+  <section id="contact">
+    <h2>お問い合わせ</h2>
+    <table>
+      <tr><th>提供</th><td>ltv.work</td></tr>
+      <tr><th>メール</th><td><a href="mailto:ai@ltv.work">ai@ltv.work</a></td></tr>
+      <tr><th>アプリ</th><td><a href="./">https://kiyotake1229.github.io/maze-puzzle/</a></td></tr>
+    </table>
+    <p class="small">不具合のご連絡は、起きた画面・操作・端末（機種と OS の版）を添えていただけると助かります。</p>
+  </section>
+</main>
+<footer>© 2026 ltv.work　MAZE</footer>
+</body>
+</html>
