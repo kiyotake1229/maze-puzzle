@@ -280,7 +280,8 @@ function generateMaze(c, r) {
     cells.push({ x, y, walls: [true, true, true, true], visited: false });
   const idx = (x, y) => (x < 0 || y < 0 || x >= c || y >= r) ? -1 : y * c + x;
   const stack = [];
-  let current = cells[0];
+  // dig from the goal corner so the goal is always a dead end (nothing can hide behind it)
+  let current = cells[cells.length - 1];
   current.visited = true;
   let visitedCount = 1;
   const total = c * r;
