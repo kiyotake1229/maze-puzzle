@@ -202,6 +202,7 @@
       <div class="ovbtns">
         <button class="btn" id="ov-btn">次のレベルへ</button>
         <button class="btn ghost" id="shareBtn" style="display:none">結果をシェア</button>
+        <button class="btn ghost" id="restartBtn" style="display:none">Level 1 から</button>
       </div>
     </div>
     <div class="overlay" id="achvOverlay">
@@ -488,6 +489,7 @@ function win() {
   document.getElementById('ov-btn').textContent = '次のレベルへ';
   document.getElementById('ov-btn').onclick = nextLevel;
   document.getElementById('shareBtn').style.display = '';
+  document.getElementById('restartBtn').style.display = 'none';
   lastResult = { level, stars, time: t.toFixed(1) };
   checkAchv({ stars, mode, fog: isFog() });
   showOverlay();
@@ -504,6 +506,7 @@ function timeUp() {
   document.getElementById('ov-btn').textContent = 'リトライ';
   document.getElementById('ov-btn').onclick = () => newLevel();
   document.getElementById('shareBtn').style.display = 'none';
+  document.getElementById('restartBtn').style.display = 'none';
   showOverlay();
 }
 
@@ -728,10 +731,28 @@ function showStart() {
   document.getElementById('ov-msg').innerHTML =
     'スワイプ / 矢印キー で一気に進む<br><span style="color:var(--accent2)">宝石</span>を集め、<span style="color:#fde047">鍵</span>で扉を開けてゴールへ<br>★3つ を狙え';
   const btn = document.getElementById('ov-btn');
-  btn.textContent = 'スタート';
-  btn.onclick = () => { started = true; hideOverlay(); try { ac().resume(); } catch(e){} beep(660,0.05,'sine',0.08); if (bgmOn) startBGM(); };
+  btn.textContent = level > 1 ? `続きから（Level ${level}）` : 'スタート';
+  btn.onclick = startGame;
   document.getElementById('shareBtn').style.display = 'none';
+  document.getElementById('restartBtn').style.display = level > 1 ? '' : 'none';
   showOverlay();
+}
+function startGame() { started = true; hideOverlay(); try { ac().resume(); } catch(e){} beep(660,0.05,'sine',0.08); if (bgmOn) startBGM(); }
+// back to Level 1 of the current mode; asks for a second tap so progress is not lost by accident
+let restartArmed = 0;
+function restartFromOne() {
+  const b = document.getElementById('restartBtn');
+  if (performance.now() - restartArmed > 3000) {
+    restartArmed = performance.now();
+    b.textContent = 'もう一度押すと Level 1 へ';
+    setTimeout(() => { b.textContent = 'Level 1 から'; }, 3000);
+    return;
+  }
+  restartArmed = 0;
+  lsSet('maze_level_' + mode, 1);
+  level = 1;
+  newLevel();
+  startGame();
 }
 function showOverlay() { document.getElementById('overlay').classList.add('show'); }
 function hideOverlay() { document.getElementById('overlay').classList.remove('show'); }
@@ -1038,6 +1059,7 @@ document.getElementById('achvClose').addEventListener('click', () => {
   if (achvReturn) document.getElementById('overlay').classList.add('show');
 });
 document.getElementById('shareBtn').addEventListener('click', shareResult);
+document.getElementById('restartBtn').addEventListener('click', restartFromOne);
 
 window.addEventListener('resize', () => { layout(); draw(); });
 
