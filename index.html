@@ -392,7 +392,8 @@ function stepOne(dir) {
 }
 // glide until a wall, a junction, or the goal
 function move(dir) {
-  if (failed || document.getElementById('overlay').classList.contains('show')) return;
+  // no moving while any overlay (start / clear / achievements) is open
+  if (failed || document.querySelector('.overlay.show')) return;
   if (!running) startTimer();
   hintPath = null;
   let moved = false, steps = 0;
