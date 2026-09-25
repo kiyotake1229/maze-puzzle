@@ -251,6 +251,7 @@ let fogOn = false;
 let totalCleared = 0;
 let gems = [], gemTotal = 0, starTotal = 0;
 let started = false;
+let hintsLeft = 0, hintUsed = false;
 let door = null, key = null;
 let bgmOn = false, bgmTimer = null, bgmStep = 0;
 let unlocked = {}, lastResult = null;
@@ -334,6 +335,7 @@ function newLevel() {
   if (level >= 2 || mode === 'hard') placeKeyDoor();
   trail = new Set(['0,0']);
   hintPath = null; hintFade = 0;
+  hintsLeft = mode === 'hard' ? 1 : 3; hintUsed = false; updateHintBtn();
   stopTimer(); startTime = 0; failed = false;
   if (mode === 'time' || mode === 'hard') {
     // account for the key detour so door levels stay fair
@@ -365,6 +367,11 @@ function updateFogBtn() {
   b.textContent = '視界: ' + (isFog() ? 'ON' : 'OFF');
   b.classList.toggle('on', isFog());
   b.classList.toggle('fixed', mode === 'hard');
+}
+function updateHintBtn() {
+  const b = document.getElementById('hintBtn');
+  b.textContent = 'ヒント 残り' + hintsLeft;
+  b.classList.toggle('fixed', hintsLeft === 0);
 }
 
 function layout() {
@@ -467,6 +474,7 @@ function win() {
   if (allGems) stars++;
   if (moves <= optimalMoves * 1.4) stars++;
   stars = Math.max(1, Math.min(3, stars));
+  if (hintUsed) stars = Math.min(stars, 2);
   totalCleared++;
   gemTotal += gotGems;
   starTotal += stars;
@@ -485,7 +493,8 @@ function win() {
   document.getElementById('ov-msg').innerHTML =
     `<div style="font-size:26px;letter-spacing:4px;margin-bottom:6px">${starStr(stars)}</div>` +
     `Level ${level} ・ <b>${t.toFixed(1)}秒</b> ・ ${moves}手<br>` +
-    `<span style="color:var(--accent2)">宝石 ${gotGems}/${gems.length}</span>`;
+    `<span style="color:var(--accent2)">宝石 ${gotGems}/${gems.length}</span>` +
+    (hintUsed ? '<br><span style="font-size:12px">ヒント使用（★は2つまで）</span>' : '');
   document.getElementById('ov-btn').textContent = '次のレベルへ';
   document.getElementById('ov-btn').onclick = nextLevel;
   document.getElementById('shareBtn').style.display = '';
@@ -555,7 +564,14 @@ function bfsPath(sx, sy, tx, ty, blockDoor) {
   return path.reverse();
 }
 function showHint() {
-  if (failed) return;
+  if (failed || document.querySelector('.overlay.show')) return;
+  // a hint shown since the last move can be shown again for free
+  if (!hintPath) {
+    if (hintsLeft <= 0) { toast('この迷路のヒントは使い切りました'); return; }
+    hintsLeft--; updateHintBtn();
+    if (!hintUsed) toast('ヒントを使ったので、この迷路の★は2つまで');
+    hintUsed = true;
+  }
   if (key && !key.got) {
     const a = bfsPath(player.x, player.y, key.x, key.y, true);
     const b = bfsPath(key.x, key.y, goal.x, goal.y, false);
