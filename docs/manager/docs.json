@@ -1,8 +1,18 @@
 {
-  "next_no": 23,
-  "total": 22,
-  "generated_at": "2026-09-28T15:53:28.541296",
+  "next_no": 24,
+  "total": 23,
+  "generated_at": "2026-09-28T15:54:21.399436",
   "documents": [
+    {
+      "no": 23,
+      "date": "2026-09-28",
+      "type": "NEW",
+      "category": "IOS",
+      "title": "AppStore用スクリーンショット",
+      "filename": "20260928_NEW_0023_IOS_AppStore用スクリーンショット.md",
+      "extension": "md",
+      "summary": "App Store 申請に必要なスクリーンショットを、見出し入りで5場面 × 4サイズ（計20枚）作った。この Mac の Google Chrome を画面なしで動かし、端末の大きさとタッチ操作の設定でアプリを表示して撮る。作り直せるように、撮影のスクリプトを `tools/` に置いた（追加のインストールは不要）。"
+    },
     {
       "no": 22,
       "date": "2026-09-28",

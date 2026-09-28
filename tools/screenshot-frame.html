@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAZE スクリーンショット台紙</title>
+<!-- App Store 用スクリーンショットの台紙。tools/make-screenshots.mjs が開いて撮影する（手で開いても見られる: ?iw=402&ih=786&scene=swipe） -->
+<style>
+  :root { --bg: #0f1226; --glowA: #232a63; --glowB: #3a1f5c; --accent: #5eead4; --accent2: #a78bfa; --muted: #8b90c4; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    overflow: hidden; display: flex; flex-direction: column; align-items: center;
+    font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; color: #e5e7ff;
+    background: radial-gradient(120% 55% at 15% 0%, var(--glowA) 0%, transparent 62%),
+                radial-gradient(110% 50% at 100% 100%, var(--glowB) 0%, transparent 58%), var(--bg);
+  }
+  .cap { text-align: center; padding: 0 7vw; box-sizing: border-box; width: 100%; }
+  .cap h1 {
+    margin: 0; font-weight: 900; line-height: 1.28; letter-spacing: 0.02em; word-break: keep-all; overflow-wrap: anywhere;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .cap p { margin: 0.55em 0 0; color: var(--muted); font-weight: 700; word-break: keep-all; overflow-wrap: anywhere; }
+  .device { position: relative; overflow: hidden; background: var(--bg); box-shadow: 0 40px 90px -30px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.14); }
+  .device iframe { border: 0; display: block; transform-origin: 0 0; }
+</style>
+</head>
+<body>
+<div class="cap"><h1 id="h"></h1><p id="p"></p></div>
+<div class="device" id="dev"><iframe id="app" title="MAZE"></iframe></div>
+<script>
+const q = new URLSearchParams(location.search);
+const iw = +q.get('iw') || 402, ih = +q.get('ih') || 786; // アプリの表示領域（その端末での CSS ピクセル）
+
+const THEMES = {
+  neon:   { bg: '#0f1226', glowA: '#232a63', glowB: '#3a1f5c', accent: '#5eead4', accent2: '#a78bfa', muted: '#8b90c4' },
+  aurora: { bg: '#041b1a', glowA: '#0b3d38', glowB: '#0e4f5c', accent: '#4ade80', accent2: '#22d3ee', muted: '#6ee7b7' },
+};
+const yesterday = (() => { const d = new Date(); d.setDate(d.getDate() - 1); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); })();
+const SCENES = {
+  swipe: { h: 'スワイプで、一気に駆け抜ける', p: '壁か分かれ道まで、ひと息に進む迷路パズル',
+    run: w => { w.eval('level = 4; newLevel(); startGame();'); moveAlong(w, 0.45); } },
+  daily: { h: '毎日かわる、みんなと同じ迷路', p: 'デイリーで最速タイムと連続記録に挑戦',
+    storage: { maze_streak: JSON.stringify({ last: yesterday, count: 6, days: 14 }) },
+    run: w => { w.eval("setMode('daily'); startGame();"); moveAlong(w, 0.5); } },
+  clear: { h: '宝石を集めて ★3 を狙え', p: '鍵で扉を開けて、遠回りせずにゴールへ',
+    // パーフェクト以外の実績は解除済みにしておき、クリア時に「実績解除: パーフェクト」だけが出るようにする
+    storage: { maze_achv: JSON.stringify({ first: 1, clear10: 1, clear30: 1, gems10: 1, gems50: 1, stars10: 1, speed: 1, dark: 1, world3: 1, daily1: 1 }) },
+    run: w => {
+      w.eval('level = 3; newLevel(); startGame();');
+      const dirs = w.eval('planRoute((1 << gems.length) - 1)');
+      dirs.slice(0, -1).forEach(d => w.eval(`move('${d}')`));
+      w.eval('startTime = performance.now() - 23800;'); // それらしいタイムにする
+      w.eval(`move('${dirs[dirs.length - 1]}')`);
+    } },
+  dark: { h: '見えるのは、自分のまわりだけ', p: '暗闇のスーパーハードに挑戦',
+    run: w => { w.eval("setMode('hard'); startGame();"); moveAlong(w, 0.3); } },
+  achv: { h: '14の実績と、4つのテーマ', p: 'ネオン・オーロラ・サンセット・モノ', theme: 'aurora',
+    settings: { themeIdx: 1 },
+    storage: { maze_achv: JSON.stringify({ first: 1, clear10: 1, gems10: 1, stars10: 1, perfect: 1, speed: 1, dark: 1, daily1: 1, streak3: 1 }) },
+    run: w => { w.eval('startGame(); showAchv();'); } },
+};
+
+// 最短で宝石を全部取る道順の frac の割合まで進める（道の跡を残すため）
+function moveAlong(w, frac) {
+  const dirs = w.eval('planRoute((1 << gems.length) - 1)');
+  dirs.slice(0, Math.floor(dirs.length * frac)).forEach(d => w.eval(`move('${d}')`));
+  w.eval('startTime = performance.now() - 18400;');
+}
+const PLAN = `function planRoute(need) {
+  const gemAt = new Map(gems.map((g, i) => [g.x + ',' + g.y, i])), seen = new Set();
+  const buckets = [[{ s: [player.x, player.y, gems.reduce((m, g, i) => g.got ? m | 1 << i : m, 0), key && !key.got ? 1 : 0], prev: null }]];
+  for (let d = 0; d < buckets.length; d++) for (const e of buckets[d] || []) {
+    if (e.s === 'goal') { const dirs = []; for (let c = e; c.prev; c = c.prev) dirs.push(c.dir); return dirs.reverse(); }
+    const id = e.s.join(); if (seen.has(id)) continue; seen.add(id);
+    for (const dir in wallIdx) {
+      let [x, y, got, locked] = e.s, steps = 0;
+      while (!cellAt(x, y).walls[wallIdx[dir]] && !(locked && isDoorEdge(x, y, dir))) {
+        x += dir === 'right' ? 1 : dir === 'left' ? -1 : 0; y += dir === 'down' ? 1 : dir === 'up' ? -1 : 0; steps++;
+        if (gemAt.has(x + ',' + y)) got |= 1 << gemAt.get(x + ',' + y);
+        if (locked && x === key.x && y === key.y) locked = 0;
+        if ((x === goal.x && y === goal.y) || hasBranch(x, y, dir)) break;
+      }
+      if (!steps) continue;
+      const atGoal = x === goal.x && y === goal.y;
+      if (atGoal && (got & need) !== need) continue;
+      (buckets[d + steps] = buckets[d + steps] || []).push({ s: atGoal ? 'goal' : [x, y, got, locked], prev: e, dir });
+    }
+  }
+  return [];
+}`;
+
+function layout() {
+  const W = innerWidth, H = innerHeight, base = Math.min(W * 0.074, H * 0.036);
+  const cap = document.querySelector('.cap');
+  cap.style.paddingTop = (H * 0.055) + 'px';
+  document.getElementById('h').style.fontSize = base + 'px';
+  document.getElementById('p').style.fontSize = (base * 0.52) + 'px';
+  const top = cap.getBoundingClientRect().bottom + H * 0.035;
+  const s = Math.min((H - top - H * 0.045) / ih, (W * 0.86) / iw);
+  const dev = document.getElementById('dev'), f = document.getElementById('app');
+  dev.style.marginTop = (H * 0.035) + 'px';
+  dev.style.width = iw * s + 'px'; dev.style.height = ih * s + 'px';
+  dev.style.borderRadius = Math.round(Math.min(iw, ih) * 0.09 * s) + 'px';
+  f.style.width = iw + 'px'; f.style.height = ih + 'px'; f.style.transform = `scale(${s})`;
+}
+
+// 撮影する場面を用意する。保存領域を整えてからアプリを読み込み、操作して、少し待つ
+window.setupScene = async name => {
+  const sc = SCENES[name];
+  const t = THEMES[sc.theme || 'neon'];
+  for (const [k, v] of Object.entries(t)) document.documentElement.style.setProperty('--' + k, v);
+  document.getElementById('h').textContent = sc.h;
+  document.getElementById('p').textContent = sc.p;
+  layout();
+  localStorage.clear();
+  const store = {
+    maze_settings: JSON.stringify(Object.assign({ themeIdx: 0, soundOn: false, fogOn: false, mode: 'normal', bgmOn: false }, sc.settings)),
+    maze_tutorial: '1', maze_tip_key: '1', maze_total: '42', maze_stars: '118', maze_gems: '101',
+    ...sc.storage,
+  };
+  for (const [k, v] of Object.entries(store)) localStorage.setItem(k, v);
+  const f = document.getElementById('app');
+  await new Promise(r => { f.onload = r; f.src = '../index.html?shot=' + Date.now(); });
+  const w = f.contentWindow;
+  // 重ね画面の切り替えは待たずに最後の状態で写す
+  const st = w.document.createElement('style'); st.textContent = '.overlay { transition: none !important; }'; w.document.head.appendChild(st);
+  w.eval(PLAN);
+  sc.run(w);
+  w.eval('cancelAnimationFrame(animId); player.px = player.x; player.py = player.y; draw();'); // 自分の丸を止まった位置に
+  await new Promise(r => setTimeout(r, 900)); // 紙吹雪・実績の知らせが出るのを待つ
+  return { title: w.document.getElementById('ov-title').textContent, sub: w.document.getElementById('sub').textContent };
+};
+layout();
+if (q.get('scene')) setupScene(q.get('scene'));
+</script>
+</body>
+</html>

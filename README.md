@@ -58,9 +58,11 @@ MAZE/
                         icon.svg から作った PNG（bash tools/make-icons.sh で作り直せる）
   tools/make-icons.sh   アイコンの書き出しスクリプト（要 Node.js）
   tools/test.mjs        自動テスト（node tools/test.mjs。下の「テスト」参照）
+  tools/make-screenshots.mjs  App Store 用スクリーンショットを作る（node tools/make-screenshots.mjs。要 Node.js 22 以降と Chrome）
+  tools/screenshot-frame.html スクリーンショットの台紙（見出しとアプリ画面を並べる）
   support.html          サポートページ（遊び方・よくある質問・プライバシーポリシー・問い合わせ先）
   report.html           開発報告書（2026-08-21 時点。岩崎さん向け。ブラウザで開ける）
-  ios-app/              iOS アプリ（Capacitor 7）。岩崎さんへの引き渡し手順.md あり
+  ios-app/              iOS アプリ（Capacitor 7）。岩崎さんへの引き渡し手順.md、App Store 用スクリーンショット（screenshots/）あり
                         node_modules/ は Dropbox を軽くするため消してある（使うときは npm install）
 ```
 
@@ -84,4 +86,6 @@ node tools/test.mjs
 3. ~~`ios-app/` の構築~~ 済み（#0016）
 4. ~~触覚フィードバックの組み込み（審査対策）~~ 済み（#0016）
 5. ~~サポートページ・プライバシーポリシー~~ 済み（#0015）
-6. **残り**: Xcode でのビルドと実機確認、スクリーンショット撮影、App Store 申請 — [ios-app/岩崎さんへの引き渡し手順.md](ios-app/岩崎さんへの引き渡し手順.md)
+6. ~~毎朝の通知（ローカル通知）~~ 済み（#0020）
+7. ~~App Store 用スクリーンショット~~ 済み（#0023。`ios-app/screenshots/`）
+8. **残り**: Xcode でのビルドと実機確認、App Store 申請（岩崎さん） — [ios-app/岩崎さんへの引き渡し手順.md](ios-app/岩崎さんへの引き渡し手順.md)
