@@ -57,6 +57,7 @@ MAZE/
   icon-192.png / icon-512.png / icon-512-maskable.png / apple-touch-icon.png
                         icon.svg から作った PNG（bash tools/make-icons.sh で作り直せる）
   tools/make-icons.sh   アイコンの書き出しスクリプト（要 Node.js）
+  tools/test.mjs        自動テスト（node tools/test.mjs。下の「テスト」参照）
   support.html          サポートページ（遊び方・よくある質問・プライバシーポリシー・問い合わせ先）
   report.html           開発報告書（2026-08-21 時点。岩崎さん向け。ブラウザで開ける）
   ios-app/              iOS アプリ（Capacitor 7）。岩崎さんへの引き渡し手順.md あり
@@ -64,6 +65,17 @@ MAZE/
 ```
 
 以前あった `maze-artifact.html`（Artifact 公開用の古いコピー）は、`index.html` をそのまま公開できるようになって不要になったため削除した（docs #0009）。
+
+## テスト
+
+index.html を直したら、コミットの前に次を実行する（要 Node.js。ほかに入れるものは無い）。
+
+```bash
+node tools/test.mjs
+```
+
+- 迷路の形、宝石・鍵が必ず取れること、最短ルートの計算、★、制限時間、デイリー、進み具合の保存、連続記録、ヒント、記録の消去、iOS アプリの触覚・通知（模した環境）を確かめる。全件 OK なら終了コード 0
+- 「デイリー: 2026/9/25 の迷路の指紋」が NG になったら、迷路の作り方が変わって全員のデイリー迷路が変わるということ。意図した変更なら、テストの期待値を新しい指紋に書き換え、docs に記録する
 
 ## iOS化の状況
 

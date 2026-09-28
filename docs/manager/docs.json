@@ -1,8 +1,18 @@
 {
-  "next_no": 21,
-  "total": 20,
-  "generated_at": "2026-09-28T15:41:42.213079",
+  "next_no": 22,
+  "total": 21,
+  "generated_at": "2026-09-28T15:46:45.055660",
   "documents": [
+    {
+      "no": 21,
+      "date": "2026-09-28",
+      "type": "NEW",
+      "category": "ALL",
+      "title": "自動テストを追加",
+      "filename": "20260928_NEW_0021_ALL_自動テストを追加.md",
+      "extension": "md",
+      "summary": "index.html のスクリプトをそのまま Node で動かし、ゲームの決まりごとを確かめる自動テスト `tools/test.mjs` を作った。22件。特にデイリー迷路は、迷路の作り方を少し変えるだけで全員の迷路が変わってしまうため、その日の迷路の「指紋」で変化を検知する。追加のインストールは不要で、`node tools/test.mjs` だけで動く。"
+    },
     {
       "no": 20,
       "date": "2026-09-28",
