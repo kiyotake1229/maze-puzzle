@@ -239,6 +239,13 @@
     </div>
   </div>
 
+  <div class="dpad">
+    <button class="up" data-dir="up">▲</button>
+    <button class="left" data-dir="left">◀</button>
+    <button class="right" data-dir="right">▶</button>
+    <button class="down" data-dir="down">▼</button>
+  </div>
+
   <div class="controls">
     <button class="btn ghost" id="modeBtn">モード: ノーマル</button>
     <button class="btn ghost" id="newBtn">やり直す</button>
@@ -249,13 +256,6 @@
     <button class="btn ghost" id="bgmBtn">♫ BGM OFF</button>
     <button class="btn ghost" id="achvBtn">実績</button>
     <button class="btn ghost" id="notifyBtn" style="display:none">毎朝の通知: OFF</button>
-  </div>
-
-  <div class="dpad">
-    <button class="up" data-dir="up">▲</button>
-    <button class="left" data-dir="left">◀</button>
-    <button class="right" data-dir="right">▶</button>
-    <button class="down" data-dir="down">▼</button>
   </div>
 
   <div class="hint">
@@ -440,7 +440,7 @@ function updateHintBtn() {
 function layout() {
   const touch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
   const reserve = touch ? 430 : 300;
-  const maxBoard = Math.min(window.innerWidth - 40, window.innerHeight - reserve, 520);
+  const maxBoard = Math.min(window.innerWidth - 40, window.innerHeight - reserve, 760);
   const size = Math.max(230, maxBoard);
   cell = Math.floor(size / cols);
   const w = cell * cols, h = cell * rows;
