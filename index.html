@@ -296,6 +296,9 @@ const ACHV = [
   { id: 'dark',    name: '闇を照らす者',       desc: '視界モードでクリア',    test: c => c.fog },
   { id: 'world3',  name: '大冒険家',           desc: 'ワールド3に到達',      test: c => worldOf(level) >= 3 },
   { id: 'hardcore',name: '不屈の挑戦者',       desc: 'スーパーハードをクリア', test: c => c.mode === 'hard' },
+  { id: 'daily1',  name: '今日の迷路',         desc: 'デイリーをクリア',      test: c => c.mode === 'daily' },
+  { id: 'streak3', name: '三日坊主返上',       desc: 'デイリーを3日連続クリア', test: c => c.streak >= 3 },
+  { id: 'streak7', name: '迷路が日課',         desc: 'デイリーを7日連続クリア', test: c => c.streak >= 7 },
 ];
 const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -318,6 +321,20 @@ function mulberry32(a) {
 function todayKey() { const d = new Date(); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); }
 function dailyLabel(k) { return Math.floor(k / 100) % 100 + '/' + k % 100; }
 function bestKeyFor() { return mode === 'daily' ? 'maze_daily_' + dailyKey : 'maze_best_' + level; }
+function prevDayKey(k) {
+  const d = new Date(Math.floor(k / 10000), Math.floor(k / 100) % 100 - 1, k % 100 - 1);
+  return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+}
+// daily streak: { last: date of the last daily clear, count: days in a row, days: days cleared in total }
+function loadStreak() { try { return JSON.parse(lsGet('maze_streak') || '{}'); } catch(e) { return {}; } }
+// the streak is still alive if the last clear was today or yesterday
+function currentStreak(today) { const s = loadStreak(); return s.last === today || s.last === prevDayKey(today) ? s.count || 0 : 0; }
+function updateSub() {
+  const streak = mode === 'daily' ? currentStreak(dailyKey) : 0;
+  document.getElementById('sub').textContent = mode === 'daily'
+    ? '迷路パズル ・ デイリー ' + dailyLabel(dailyKey) + (streak ? ' ・ 連続' + streak + '日' : '')
+    : '迷路パズル ・ WORLD ' + worldOf(level);
+}
 
 function generateMaze(c, r) {
   const cells = [];
@@ -390,7 +407,7 @@ function newLevel() {
   }
   layout();
   updateStats();
-  document.getElementById('sub').textContent = daily ? '迷路パズル ・ デイリー ' + dailyLabel(dailyKey) : '迷路パズル ・ WORLD ' + worldOf(level);
+  updateSub();
   hideOverlay();
   hideCoach(false);
   keyTip();
@@ -531,6 +548,17 @@ function win() {
     lsSet('maze_stars', starTotal);
   }
   if (!daily) lsSet('maze_level_' + mode, level + 1);
+  if (daily && prev === Infinity) {
+    const s = loadStreak();
+    if (s.last !== dailyKey) {
+      s.count = s.last === prevDayKey(dailyKey) ? (s.count || 0) + 1 : 1;
+      s.last = dailyKey;
+      s.days = (s.days || 0) + 1;
+      lsSet('maze_streak', JSON.stringify(s));
+    }
+  }
+  const streak = daily ? currentStreak(dailyKey) : 0;
+  updateSub();
   updateProgress();
   sfxClear();
   vib([25, 30, 45], 'SUCCESS');
@@ -544,13 +572,14 @@ function win() {
     `<div style="font-size:26px;letter-spacing:4px;margin-bottom:6px">${starStr(stars)}</div>` +
     `${daily ? 'デイリー ' + dailyLabel(dailyKey) : 'Level ' + level} ・ <b>${t.toFixed(1)}秒</b> ・ ${moves}手<br>` +
     `<span style="color:var(--accent2)">宝石 ${gotGems}/${gems.length}</span>` +
+    (daily && streak ? `<br><span style="color:var(--player)">デイリー 連続${streak}日</span>` : '') +
     (hintUsed ? '<br><span style="font-size:12px">ヒント使用（★は2つまで）</span>' : '');
   document.getElementById('ov-btn').textContent = daily ? 'もう一度' : '次のレベルへ';
   document.getElementById('ov-btn').onclick = daily ? () => newLevel() : nextLevel;
   document.getElementById('shareBtn').style.display = '';
   document.getElementById('restartBtn').style.display = 'none';
-  lastResult = { level, stars, time: t.toFixed(1), daily: daily ? dailyLabel(dailyKey) : null };
-  checkAchv({ stars, mode, fog: isFog() });
+  lastResult = { level, stars, time: t.toFixed(1), daily: daily ? dailyLabel(dailyKey) : null, streak };
+  checkAchv({ stars, mode, fog: isFog(), streak });
   showOverlay();
 }
 
@@ -806,7 +835,7 @@ function resetRecords() {
 function shareResult() {
   if (!lastResult) return;
   const text = lastResult.daily
-    ? `MAZE デイリー ${lastResult.daily} を ★${lastResult.stars} / ${lastResult.time}秒 でクリア! 迷路パズル`
+    ? `MAZE デイリー ${lastResult.daily} を ★${lastResult.stars} / ${lastResult.time}秒 でクリア!${lastResult.streak >= 2 ? `（${lastResult.streak}日連続）` : ''} 迷路パズル`
     : `MAZE で Level ${lastResult.level} を ★${lastResult.stars} / ${lastResult.time}秒 で攻略! 迷路パズル`;
   const url = location.href;
   if (navigator.share) {
