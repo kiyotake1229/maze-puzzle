@@ -4,13 +4,13 @@
 import json, os
 OUT = os.path.dirname(os.path.abspath(__file__))
 PDF_NAME = 'MAZE_社内説明.pdf'
-APP, DATE, N = 'MAZE', '2026-09-15', 7
+APP, DATE, N = 'MAZE', '2026-09-28', 7
 
 BG, WALL, PATH = '#0f1226', '#2b3168', '#1a1f45'
 ACC, ACC2, PLAYER, GOAL = '#5eead4', '#a78bfa', '#fbbf24', '#34d399'
 TEXT, MUTED, LINE = '#e5e7ff', '#8b90c4', 'rgba(229,231,255,.14)'
 PAPER = '#F3F4FB'
-THEMES = [('デフォルト', '#0f1226', '#2b3168', '#5eead4', '#fbbf24'), ('オーロラ', '#041b1a', '#0d4a44', '#4ade80', '#fde047'), ('サンセット', '#1c0a1e', '#5b2340', '#fb923c', '#fde68a'), ('モノ', '#0d0f12', '#3a3f47', '#e5e7eb', '#f59e0b')]
+THEMES = [('ネオン', '#0f1226', '#2b3168', '#5eead4', '#fbbf24'), ('オーロラ', '#041b1a', '#0d4a44', '#4ade80', '#fde047'), ('サンセット', '#1c0a1e', '#5b2340', '#fb923c', '#fde68a'), ('モノ', '#0d0f12', '#3a3f47', '#e5e7eb', '#f59e0b')]
 
 HEAD = '''<!doctype html>
 <html>
@@ -50,6 +50,8 @@ ICON = {
  'gem': '<svg class="ico" viewBox="0 0 24 24"><path d="M6 4h12l4 6-10 11L2 10z"/><path d="M2 10h20M9 4l3 6 3-6M9 10l3 11 3-11"/></svg>',
  'music': '<svg class="ico" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>',
  'check': '<svg class="ico" viewBox="0 0 24 24"><path d="M5 12l4 4L19 7"/></svg>',
+ 'bell': '<svg class="ico" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 3 8 3 8H3s3-2 3-8"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></svg>',
+ 'calendar': '<svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
  'clock': '<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 3h6"/></svg>',
 }
 
@@ -111,8 +113,8 @@ cover_body = ('<div style="flex:1;padding:44px 52px 40px;display:flex;flex-direc
               '<div class="fm" style="font-size:14px;color:%s">社内説明 · アプリ開発 · %s</div>'
               '<div class="fd" style="font-size:120px;font-weight:900;line-height:.95;letter-spacing:.08em;color:%s">MAZE</div>'
               '<div style="font-size:26px;font-weight:700;line-height:1.5;color:%s">レベル制の迷路パズル。軽くて、すぐ遊べる</div>'
-              '<div class="fm" style="display:flex;gap:28px;font-size:13px;color:%s;border-top:1px solid %s;padding-top:16px;margin-top:6px">'
-              '<span>SINGLE HTML · 54KB</span><span>OFFLINE</span><span>kiyotake1229.github.io/maze-puzzle</span></div></div>') % (ACC, DATE, TEXT, MUTED, MUTED, LINE)
+              '<div class="fm" style="display:flex;gap:24px;white-space:nowrap;font-size:13px;color:%s;border-top:1px solid %s;padding-top:16px;margin-top:6px">'
+              '<span>SINGLE HTML · 57KB</span><span>OFFLINE · PWA · iOS</span><span>kiyotake1229.github.io/maze-puzzle</span></div></div>') % (ACC, DATE, TEXT, MUTED, MUTED, LINE)
 cover = ('<div style="display:flex;align-items:center;justify-content:center;flex:1">'
          '<div style="display:flex;align-items:center;gap:20px;width:1060px;background:%s;border:1px solid %s;border-radius:22px;box-shadow:0 30px 70px rgba(0,0,0,.6);padding:36px 40px;box-sizing:border-box">'
          '<div style="flex:none">%s</div>%s</div></div>') % (PATH, LINE, big, cover_body)
@@ -120,29 +122,29 @@ files['Main.dc.html'] = slide(1, cover, '', '')
 
 # ---------- 02 ねらい ----------
 aims = [
- ('feather', '54KBの単一HTML', '画像も音源もない。全部コードで描いて鳴らす。この一式の中でいちばん軽い。'),
- ('zap', '待ち時間ゼロ', '開いた瞬間に遊べる。読み込み画面もチュートリアルもいらない。'),
+ ('feather', '57KBの単一HTML', '画像も音源もない。全部コードで描いて鳴らす。この一式の中でいちばん軽い。'),
+ ('zap', '待ち時間ゼロ', '開いた瞬間に遊べる。読み込み画面はなく、操作の案内は初回にひとことだけ。'),
  ('smile', 'ルール説明がいらない', '迷路は誰でも知っている。スワイプするだけ。子どもから年配の方まで。'),
 ]
 items = [paper(head_row(ICON[i], t, 26, '#1a1d3a', '#3b3f8a') + p(d, 17, '#474b6e', 1.85), 'min-height:250px') for i, t, d in aims]
-body = grid(3, items, 22) + '<div style="font-size:18px;color:%s;line-height:1.7">「最小の構成で、ゲームとして成立するもの」を1本作った。iOS化のラインナップに最短で追加できる。</div>' % MUTED
+body = grid(3, items, 22) + '<div style="font-size:18px;color:%s;line-height:1.7">「最小の構成で、ゲームとして成立するもの」を1本作った。iOS 申請の準備まで済んでいる。</div>' % MUTED
 files['S02.dc.html'] = slide(2, body, '01 · ねらい', '最小の構成で、ゲームとして成立させる')
 
 # ---------- 03 遊び方 ----------
 steps = [
- ('swipe', 'スワイプで動く', '上下左右になぞる。画面のボタンでも、PCなら矢印キーでも。'),
- ('gem', '宝石とスターを拾う', '道中の宝石を集める。スターは実績の条件になる。'),
- ('flag', 'ゴールで次へ', 'ゴールに着くと次のレベル。迷路は少しずつ大きく、複雑に。'),
- ('bulb', '詰まったらヒント', 'ヒントで道筋が光る。やり直しもすぐ。ストレスにしない。'),
+ ('swipe', 'スワイプで一気に進む', 'なぞると、壁か分かれ道まで一気に進む。十字ボタンや矢印キーでも。'),
+ ('gem', '宝石と鍵', '宝石を集め、鍵で赤い扉を開ける。全部取って遠回りしなければ★3。'),
+ ('flag', 'ゴールで次へ', 'ゴールに着くと次のレベル。迷路は少しずつ大きく。進み具合は保存される。'),
+ ('bulb', '詰まったらヒント', 'ヒントで道筋が光る。1つの迷路で3回まで、使うと★は2つまで。'),
 ]
 items = []
 for k, (i, t, d) in enumerate(steps):
     items.append(card('<div class="fm" style="font-size:12px;color:%s">STEP %d</div>' % (ACC, k + 1) + head_row(ICON[i], t) + p(d), 'min-height:250px'))
-modes = ''.join(tag(m, c, b) for m, c, b in [('ノーマル', ACC, 'rgba(94,234,212,.14)'), ('スーパーハード', ACC2, 'rgba(167,139,250,.16)'), ('タイムアタック', PLAYER, 'rgba(251,191,36,.14)'), ('視界モード（暗闇）', '#1a1d3a', 'rgba(26,29,58,.1)')])
+modes = ''.join(tag(m, c, b) for m, c, b in [('ノーマル', '#0f766e', 'rgba(94,234,212,.22)'), ('タイムアタック', '#92400e', 'rgba(251,191,36,.22)'), ('スーパーハード', '#5b21b6', 'rgba(167,139,250,.22)'), ('デイリー', '#065f46', 'rgba(52,211,153,.22)')])
 body = grid(4, items) + ('<div style="display:flex;align-items:center;gap:18px;background:%s;color:#1a1d3a;border-radius:16px;padding:18px 26px">'
                          '<span class="fd" style="font-size:24px;white-space:nowrap;flex:none">モードは4つ。</span>'
                          '<div style="display:flex;gap:8px;flex:none">%s</div>'
-                         '<span style="font-size:14px;line-height:1.6;color:#5c6088;flex:1;min-width:0">視界モードは自分の周りだけ見える。スーパーハードでは常時ON。</span></div>') % (PAPER, modes.replace('font-size:12px', 'font-size:13px;white-space:nowrap'))
+                         '<span style="font-size:14px;line-height:1.6;color:#5c6088;flex:1;min-width:0">デイリーは日替わりで、同じ日なら全員同じ迷路。暗闇（視界）は別のボタンで切り替え、スーパーハードでは常に暗闇。</span></div>') % (PAPER, modes.replace('font-size:12px', 'font-size:13px;white-space:nowrap'))
 files['S03.dc.html'] = slide(3, body, '02 · 遊び方', 'なぞって、拾って、ゴールへ')
 
 # ---------- 04 続ける仕掛け ----------
@@ -151,17 +153,17 @@ for name, bg, wall, acc, pl in THEMES:
     sw += ('<div style="display:flex;flex-direction:column;gap:8px;align-items:center">%s<span style="font-size:13px;color:%s">%s</span></div>'
            % (maze(['#######', '#P.#..#', '#.##.##', '#....G#', '#######'], 12, 2, wall, bg, pl, GOAL, acc), MUTED, name))
 themes = card(head_row(ICON['palette'], 'テーマ4種', 21) + '<div style="display:flex;justify-content:space-between;gap:10px;margin-top:6px">%s</div>' % sw + p('気分で切り替える。壁・道・プレイヤーの色がまとめて変わる。', 14.5, MUTED, 1.7), 'grid-column:span 2')
-ach = ['はじめの一歩', '迷路マスター', '迷宮の主', '宝石ハンター', '宝石王', 'スターコレクター', 'パーフェクト', 'スピードスター', '闇を照らす者', '大冒険家', '不屈の挑戦者']
-chips = ''.join('<span style="font-size:13px;padding:5px 10px;border-radius:6px;background:%s;border:1px solid %s;color:%s">%s</span>' % (BG, LINE, TEXT, a) for a in ach)
+ach = ['はじめの一歩', '迷路マスター', '迷宮の主', '宝石ハンター', '宝石王', 'スターコレクター', 'パーフェクト', 'スピードスター', '闇を照らす者', '大冒険家', '不屈の挑戦者', '今日の迷路', '三日坊主返上', '迷路が日課']
+chips = ''.join('<span style="font-size:12px;padding:4px 8px;border-radius:6px;background:%s;border:1px solid %s;color:%s">%s</span>' % (BG, LINE, TEXT, a) for a in ach)
 items = [
  themes,
- card(head_row(ICON['trophy'], '実績 11種', 21) + '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">%s</div>' % chips + p('クリア数・宝石・タイム・視界モードなど、遊び方ごとに解除される。', 14.5, MUTED, 1.7)),
- card(head_row(ICON['layers'], 'レベル制', 21) + p('クリアするたびに次のレベルへ。進み具合は端末に保存され、続きから遊べる。', 15, MUTED, 1.7), 'padding:18px 22px'),
- card(head_row(ICON['clock'], 'タイムアタック', 21) + p('同じ迷路を何秒で抜けられるか。「スピードスター」の実績につながる。', 15, MUTED, 1.7), 'padding:18px 22px'),
- card(head_row(ICON['music'], '効果音・BGM', 21) + p('Web Audio で合成。音源ファイルなし。設定でそれぞれ ON/OFF。', 15, MUTED, 1.7), 'padding:18px 22px'),
+ card(head_row(ICON['trophy'], '実績 14種', 21) + '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px">%s</div>' % chips + p('クリア数・宝石・★・モード・デイリーの連続など、遊び方ごとに解除される。', 14, MUTED, 1.6)),
+ card(head_row(ICON['calendar'], 'デイリーと連続記録', 21) + p('毎日かわる、みんなと同じ迷路。連続日数を数え、シェアの文面にも入る。', 15, MUTED, 1.7), 'padding:18px 22px'),
+ card(head_row(ICON['layers'], 'レベル制', 21) + p('クリアするたびに次のレベルへ。進み具合はモードごとに保存され、続きから遊べる。', 15, MUTED, 1.7), 'padding:18px 22px'),
+ card(head_row(ICON['bell'], '毎朝の通知（iOS）', 21) + p('iOS 版は毎朝8時に「今日の迷路」をお知らせ（ON/OFF）。触覚フィードバックも。', 15, MUTED, 1.7), 'padding:18px 22px'),
 ]
 body = '<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto auto;gap:16px;align-content:start">%s</div>' % ''.join(items)
-files['S04.dc.html'] = slide(4, body, '03 · 続ける仕掛け', 'テーマ・実績・タイムで、もう1面')
+files['S04.dc.html'] = slide(4, body, '03 · 続ける仕掛け', 'デイリー・実績・テーマで、毎日もう1面')
 
 # ---------- 05 画面の構成 ----------
 shot = ('<div style="width:300px;flex:none;background:%s;border:1px solid %s;border-radius:28px;padding:22px 18px;display:flex;flex-direction:column;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.6)">'
@@ -176,36 +178,36 @@ shot = ('<div style="width:300px;flex:none;background:%s;border:1px solid %s;bor
     WALL, LINE, WALL, LINE, WALL, LINE, WALL, LINE,
     tag('ヒント'), tag('やり直し'), tag('視界: OFF', MUTED, 'rgba(229,231,255,.08)'))
 parts = [
- ('layers', '上：レベル・タイム・宝石', '今どこにいて、どれだけ集めたかが一目で分かる'),
+ ('layers', '上：レベル・タイム・手数・最速', '今どこにいて、どれだけ速いかが一目で分かる'),
  ('eye', '中：迷路', '道と壁は色で区別。通った道は軌跡として残るので、迷わない'),
- ('swipe', '下：十字ボタン', 'スワイプが苦手な人向け。片手の親指で届く位置'),
- ('bulb', '最下段：ヒント・やり直し・視界', '詰まった時の逃げ道を常に見えるところに'),
+ ('swipe', '下：十字ボタン', 'スワイプが苦手な人向け。盤面のすぐ下、片手の親指で届く位置'),
+ ('bulb', '最下段：モード・ヒント・やり直し・設定', '詰まった時の逃げ道と設定を、十字ボタンの下にまとめる'),
 ]
 right = '<div style="display:flex;flex-direction:column;gap:12px;flex:1">' + ''.join(card(head_row(ICON[i], t, 19) + p(d, 14.5, MUTED, 1.65), 'padding:16px 20px;gap:6px') for i, t, d in parts) + '</div>'
 body = '<div style="display:flex;gap:36px;flex:1;align-items:flex-start">%s%s</div>' % (shot, right)
 files['S05.dc.html'] = slide(5, body, '04 · 画面の構成', '1画面に、必要なものだけ')
 
 # ---------- 06 現状 ----------
-done = ['Web版 完成・公開中（GitHub Pages）', '通信なし。進み具合・実績・設定は端末内のみ', 'レベル制、4モード、テーマ4種、実績11種、ヒント、効果音・BGM', 'PWA用の meta タグは設定済み。manifest と Service Worker は未作成', 'アイコン（192 / 512 / apple-touch）は未作成', '触覚フィードバックは未実装（審査対策として追加が必要）']
+done = ['Web版 完成・公開中。PWA 対応済み（ホーム画面に追加、通信なしで起動）', '通信なし。記録・実績・設定は端末内のみ', '4モード（デイリー含む）、テーマ4種、実績14種、連続記録、ヒント、効果音・BGM', 'iOS プロジェクト作成済み（触覚・毎朝の通知）。Xcode でのビルドは未確認', 'スクリーンショット（4サイズ×5枚）・申請文の下書き・サポートページを用意', '自動テスト22件。修正・改善の記録は docs に22件']
 left = '<div style="display:flex;flex-direction:column;gap:9px">' + ''.join(check_line(d) for d in done) + '</div>'
 right = paper('<div class="fm" style="font-size:12px;color:#5c6088">いま触れる</div>'
               '<div class="fd" style="font-size:22px;line-height:1.3">kiyotake1229.github.io/maze-puzzle/</div>'
               '<div style="font-size:15px;line-height:1.8;color:#474b6e">スマホのブラウザで開くだけ。読み込みは一瞬。</div>'
-              '<div class="fm" style="display:flex;flex-wrap:wrap;gap:8px;border-top:1px dashed #c9cce0;padding-top:14px;font-size:12px;color:#5c6088"><span>単一 HTML</span><span>·</span><span>通信なし</span><span>·</span><span>端末内保存</span><span>·</span><span>約 54KB</span></div>', 'min-height:300px;justify-content:center')
+              '<div class="fm" style="display:flex;flex-wrap:wrap;gap:8px;border-top:1px dashed #c9cce0;padding-top:14px;font-size:12px;color:#5c6088"><span>単一 HTML</span><span>·</span><span>通信なし</span><span>·</span><span>端末内保存</span><span>·</span><span>約 57KB</span></div>', 'min-height:300px;justify-content:center')
 body = '<div style="display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:40px;flex:1;align-content:start">%s%s</div>' % (left, right)
-files['S06.dc.html'] = slide(6, body, '05 · 現状', 'Web版は完成。PWA と iOS はこれから')
+files['S06.dc.html'] = slide(6, body, '05 · 現状', 'Web版・PWA は完成。iOS は申請の準備まで')
 
 # ---------- 07 次のステップ ----------
 road = [
- ('1', 'アイコンと PWA', 'icon.svg から 192 / 512 / apple-touch を生成。manifest.json と sw.js は麻雀のものを写して書き換え', '半日'),
- ('2', 'iOS 化', 'Capacitor で包む。コツコツの ios-app を雛形に。触覚フィードバックを組み込む（審査対策）', '半日'),
- ('3', '申請', '年齢制限 4+、カテゴリ「ゲーム／パズル」、「データを収集しません」、スクリーンショット3サイズ', '—'),
+ ('1', 'ビルドと実機確認', '手順書のとおり npm install → npm run sync → Xcode で署名してビルド。振動と通知を実機で確かめる', '半日'),
+ ('2', '申請', 'スクリーンショット・説明文・キーワード・審査メモは用意済み。App Store Connect に入力して提出', '1〜2時間'),
+ ('3', '公開後', 'デイリーの利用と通知の反応を見て、モードや実績を足す。同じ作りで Android 版も作れる', '—'),
 ]
 items = [card('<div class="fm" style="font-size:44px;font-weight:700;line-height:1;color:%s">%s</div><div class="fd" style="font-size:22px">%s</div>%s<div class="fm" style="font-size:12px;color:%s;border-top:1px solid %s;padding-top:10px">目安 %s</div>' % (ACC, n, t, p(d, 15, MUTED, 1.75).replace('<p style="', '<p style="flex:1;'), MUTED, LINE, w), 'min-height:270px') for n, t, d, w in road]
 cost = paper('<div class="fm" style="font-size:12px;color:#5c6088">費用</div><div style="display:flex;align-items:baseline;gap:10px"><span class="fd" style="font-size:36px">¥12,800</span><span style="font-size:15px;color:#5c6088">/ 年 · Apple Developer Program のみ</span></div><div style="font-size:14px;color:#474b6e">素材もサーバーも使っていないので、他の費用は0</div>', 'flex:1;padding:18px 24px;gap:6px')
-decide = card('<div class="fm" style="font-size:12px;color:%s">今日決めたいこと</div><div style="font-size:18px;font-weight:700;line-height:1.6">MAZE を iOS 化のラインナップに入れるか。軽いので、まとめて申請する「数」を増やす候補になる。</div>' % ACC, 'flex:1;padding:18px 24px;gap:6px;justify-content:center')
+decide = card('<div class="fm" style="font-size:12px;color:%s">今日決めたいこと</div><div style="font-size:18px;font-weight:700;line-height:1.6">MAZE を申請に進めるか。準備は揃っているので、署名とアップロードで出せる（手順は ios-app/岩崎さんへの引き渡し手順.md）。</div>' % ACC, 'flex:1;padding:18px 24px;gap:6px;justify-content:center')
 body = grid(3, items) + '<div style="display:flex;gap:20px">%s%s</div>' % (cost, decide)
-files['S07.dc.html'] = slide(7, body, '06 · 次のステップ', '1日あれば iOS 化まで届く')
+files['S07.dc.html'] = slide(7, body, '06 · 次のステップ', 'あとは Xcode でビルドして申請するだけ')
 
 # ---------- 書き出し ----------
 for name, src in files.items():
