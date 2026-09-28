@@ -248,6 +248,7 @@
     <button class="btn ghost on" id="soundBtn">♪ 音 ON</button>
     <button class="btn ghost" id="bgmBtn">♫ BGM OFF</button>
     <button class="btn ghost" id="achvBtn">実績</button>
+    <button class="btn ghost" id="notifyBtn" style="display:none">毎朝の通知: OFF</button>
   </div>
 
   <div class="dpad">
@@ -277,6 +278,7 @@ let mode = 'normal'; // normal | time | hard | daily
 let rand = Math.random, dailyKey = 0; // daily: seeded random + the date (YYYYMMDD) the maze belongs to
 let timeLimit = 0, remaining = 0, failed = false;
 let fogOn = false;
+let notifyOn = false; // iOS app only: morning reminder for the daily maze
 let totalCleared = 0;
 let gems = [], gemTotal = 0, starTotal = 0;
 let started = false;
@@ -1150,6 +1152,41 @@ function vib(p, kind) {
     if (navigator.vibrate) navigator.vibrate(p);
   } catch(e) {}
 }
+
+// iOS app only: a reminder every morning at 8:00 for the daily maze.
+// it is a local notification booked on the device; nothing is sent anywhere
+const NOTIFY_ID = 2001;
+function updateNotifyBtn() {
+  const b = document.getElementById('notifyBtn');
+  b.style.display = NATIVE && CAP.LocalNotifications ? '' : 'none';
+  b.textContent = '毎朝の通知: ' + (notifyOn ? 'ON' : 'OFF');
+  b.classList.toggle('on', notifyOn);
+}
+async function scheduleDaily() {
+  const LN = CAP.LocalNotifications;
+  if (!NATIVE || !LN) return;
+  try {
+    await LN.cancel({ notifications: [{ id: NOTIFY_ID }] });
+    if (notifyOn) await LN.schedule({ notifications: [{
+      id: NOTIFY_ID, title: 'MAZE', body: '今日の迷路が届きました。最速タイムに挑戦しよう',
+      schedule: { on: { hour: 8, minute: 0 } } // repeats every day at 8:00
+    }] });
+  } catch(e) {}
+}
+async function toggleNotify() {
+  const LN = CAP.LocalNotifications;
+  if (!NATIVE || !LN) return;
+  if (!notifyOn) {
+    let p = null;
+    try { p = await LN.requestPermissions(); } catch(e) {}
+    if (!p || p.display !== 'granted') { toast('通知が許可されていません（設定アプリで許可できます）'); return; }
+  }
+  notifyOn = !notifyOn;
+  await scheduleDaily();
+  updateNotifyBtn();
+  saveSettings();
+  toast(notifyOn ? '毎朝8時に、今日の迷路をお知らせします' : '通知を止めました');
+}
 function sfxFail() { beep(300,0.2,'sawtooth',0.12); beep(180,0.35,'sawtooth',0.12,0.12); }
 
 // ---- input ----
@@ -1179,14 +1216,16 @@ document.querySelectorAll('.dpad button').forEach(b =>
 document.getElementById('newBtn').addEventListener('click', () => newLevel());
 document.getElementById('hintBtn').addEventListener('click', showHint);
 
-document.getElementById('modeBtn').addEventListener('click', () => {
-  mode = mode === 'normal' ? 'time' : mode === 'time' ? 'hard' : mode === 'hard' ? 'daily' : 'normal';
+function setMode(m) {
+  mode = m;
   document.getElementById('modeBtn').textContent = 'モード: ' + modeLabel(mode);
   updateFogBtn();
   level = savedLevel(mode);
   saveSettings();
   newLevel();
-});
+}
+document.getElementById('modeBtn').addEventListener('click', () =>
+  setMode(mode === 'normal' ? 'time' : mode === 'time' ? 'hard' : mode === 'hard' ? 'daily' : 'normal'));
 
 document.getElementById('fogBtn').addEventListener('click', () => {
   if (mode === 'hard') { toast('スーパーハードは常に暗闇です'); return; }
@@ -1229,11 +1268,12 @@ document.getElementById('achvClose').addEventListener('click', () => {
 document.getElementById('shareBtn').addEventListener('click', shareResult);
 document.getElementById('restartBtn').addEventListener('click', restartFromOne);
 document.getElementById('resetBtn').addEventListener('click', resetRecords);
+document.getElementById('notifyBtn').addEventListener('click', toggleNotify);
 
 window.addEventListener('resize', () => { layout(); draw(); });
 
 function saveSettings() {
-  lsSet('maze_settings', JSON.stringify({ themeIdx, soundOn, fogOn, mode, bgmOn }));
+  lsSet('maze_settings', JSON.stringify({ themeIdx, soundOn, fogOn, mode, bgmOn, notifyOn }));
 }
 function loadSettings() {
   let s; try { s = JSON.parse(lsGet('maze_settings') || '{}'); } catch(e) { s = {}; }
@@ -1241,6 +1281,7 @@ function loadSettings() {
   if (typeof s.soundOn === 'boolean') soundOn = s.soundOn;
   if (typeof s.fogOn === 'boolean') fogOn = s.fogOn;
   if (typeof s.bgmOn === 'boolean') bgmOn = s.bgmOn;
+  if (typeof s.notifyOn === 'boolean') notifyOn = s.notifyOn;
   if (['normal', 'time', 'hard', 'daily'].includes(s.mode)) mode = s.mode;
   applyTheme();
   const sb = document.getElementById('soundBtn');
@@ -1260,6 +1301,16 @@ gemTotal = parseInt(lsGet('maze_gems') || '0', 10);
 starTotal = parseInt(lsGet('maze_stars') || '0', 10);
 loadSettings();
 level = savedLevel(mode);
+updateNotifyBtn();
+if (notifyOn) scheduleDaily();
+// opening the app from the reminder goes straight to the daily maze
+if (NATIVE && CAP.LocalNotifications) {
+  CAP.LocalNotifications.addListener('localNotificationActionPerformed', () => {
+    if (mode === 'daily') return;
+    setMode('daily');
+    if (!started) showStart();
+  });
+}
 updateProgress();
 newLevel();
 showStart();
