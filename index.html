@@ -146,6 +146,7 @@
   .btn.ghost:hover { background: rgba(255,255,255,0.1); }
   .btn.ghost.on { background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #0b1024; }
   .ghost.fixed { opacity: 0.55; }
+  .btn.ghost.subtle { color: var(--muted); border-color: rgba(255,255,255,0.08); }
 
   .hint { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-align: center; }
   .hint b { color: var(--accent); }
@@ -231,7 +232,10 @@
     <div class="overlay" id="achvOverlay">
       <div class="big clear-big" style="font-size:22px">実績 <span id="achvCount"></span></div>
       <div class="badges" id="badgeList"></div>
-      <button class="btn ghost" id="achvClose">閉じる</button>
+      <div class="ovbtns">
+        <button class="btn ghost" id="achvClose">閉じる</button>
+        <button class="btn ghost subtle" id="resetBtn">記録を消す</button>
+      </div>
     </div>
   </div>
 
@@ -776,6 +780,29 @@ function showAchv() {
   document.getElementById('achvCount').textContent = Object.keys(unlocked).length + ' / ' + ACHV.length;
   document.getElementById('achvOverlay').classList.add('show');
 }
+// erase every record (bests, totals, achievements, progress, daily); settings and the one-time guides stay.
+// asks for a second tap within 3 seconds
+let resetArmed = 0;
+function resetRecords() {
+  const b = document.getElementById('resetBtn');
+  if (performance.now() - resetArmed > 3000) {
+    resetArmed = performance.now();
+    b.textContent = 'もう一度押すと全部消えます';
+    setTimeout(() => { b.textContent = '記録を消す'; }, 3000);
+    return;
+  }
+  resetArmed = 0;
+  const keep = ['maze_settings', 'maze_tutorial', 'maze_tip_key'];
+  try { Object.keys(localStorage).filter(k => k.startsWith('maze_') && !keep.includes(k)).forEach(k => localStorage.removeItem(k)); } catch(e) {}
+  totalCleared = gemTotal = starTotal = 0;
+  unlocked = {};
+  level = 1;
+  updateProgress();
+  newLevel();
+  showAchv();
+  b.textContent = '記録を消す';
+  toast('記録を消しました');
+}
 function shareResult() {
   if (!lastResult) return;
   const text = lastResult.daily
@@ -1172,6 +1199,7 @@ document.getElementById('achvClose').addEventListener('click', () => {
 });
 document.getElementById('shareBtn').addEventListener('click', shareResult);
 document.getElementById('restartBtn').addEventListener('click', restartFromOne);
+document.getElementById('resetBtn').addEventListener('click', resetRecords);
 
 window.addEventListener('resize', () => { layout(); draw(); });
 
