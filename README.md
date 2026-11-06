@@ -10,7 +10,7 @@
 | 通信 | なし（完全オフライン） |
 | データ | 端末内のみ |
 | PWA | 対応済み（ホーム画面に追加可。一度開けば通信なしで起動。docs #0014） |
-| iOS | プロジェクト作成済み（`ios-app/`。Bundle ID `work.ltv.maze`）。Xcode でのビルドは未確認。手順は [ios-app/岩崎さんへの引き渡し手順.md](ios-app/岩崎さんへの引き渡し手順.md) |
+| iOS | プロジェクト作成済み（`ios-app/`。Bundle ID `work.ltv.maze`）。GitHub Actions（Xcode 26）でビルド確認済み（実機は未確認）。プライバシーマニフェストと暗号化の申告あり（docs #0025）。手順は [ios-app/岩崎さんへの引き渡し手順.md](ios-app/岩崎さんへの引き渡し手順.md) |
 | サポート | https://kiyotake1229.github.io/maze-puzzle/support.html （プライバシーポリシーを含む） |
 
 ---
@@ -64,6 +64,7 @@ MAZE/
   report.html           開発報告書（2026-08-21 時点。岩崎さん向け。ブラウザで開ける）
   ios-app/              iOS アプリ（Capacitor 7）。岩崎さんへの引き渡し手順.md、App Store 用スクリーンショット（screenshots/）あり
                         node_modules/ は Dropbox を軽くするため消してある（使うときは npm install）
+  .github/workflows/ios-build.yml  iOS のビルド確認（GitHub Actions。push で動く。Xcode 26 に固定。docs #0025）
 ```
 
 以前あった `maze-artifact.html`（Artifact 公開用の古いコピー）は、`index.html` をそのまま公開できるようになって不要になったため削除した（docs #0009）。
@@ -88,4 +89,5 @@ node tools/test.mjs
 5. ~~サポートページ・プライバシーポリシー~~ 済み（#0015）
 6. ~~毎朝の通知（ローカル通知）~~ 済み（#0020）
 7. ~~App Store 用スクリーンショット~~ 済み（#0023。`ios-app/screenshots/`）
-8. **残り**: Xcode でのビルドと実機確認、App Store 申請（岩崎さん） — [ios-app/岩崎さんへの引き渡し手順.md](ios-app/岩崎さんへの引き渡し手順.md)
+8. ~~プライバシーマニフェスト・暗号化の申告・ビルド確認（GitHub Actions、Xcode 26）~~ 済み（#0025）
+9. **残り**: 実機確認、App Store 申請（岩崎さん） — [ios-app/岩崎さんへの引き渡し手順.md](ios-app/岩崎さんへの引き渡し手順.md)
